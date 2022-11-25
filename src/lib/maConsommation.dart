@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
-import 'BottomNavBar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,11 +41,37 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
         ),
-        body: Center(),
-        extendBody: true,
-        bottomNavigationBar: const BottomNavBar(0));
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+
+      extendBody: true, //<------like this
+      bottomNavigationBar: DotNavigationBar(
+        currentIndex: 0,
+        onTap: ((p0) => {}),
+        dotIndicatorColor: Colors.black,
+        // enableFloatingNavBar: false
+        items: [],
+      ),
+    );
   }
 }
