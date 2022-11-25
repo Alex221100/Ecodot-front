@@ -9,12 +9,13 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
+  int _current_index = 0;
   @override
   Widget build(BuildContext context) {
     return DotNavigationBar(
-      currentIndex: 0,
+      currentIndex: _current_index,
       //on tap redirect to the page
-      onTap: (index) => setState(() => index = index),
+      onTap: (index) => setState(() => _current_index = index),
 
       dotIndicatorColor: Colors.black,
       // enableFloatingNavBar: true,
