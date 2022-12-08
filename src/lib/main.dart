@@ -47,6 +47,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Center(),
         extendBody: true,
-        bottomNavigationBar: const BottomNavBar(0));
+        bottomNavigationBar: const BottomNavBar(2));
   }
 }

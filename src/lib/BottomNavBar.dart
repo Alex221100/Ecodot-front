@@ -1,5 +1,9 @@
+import 'package:ecodot/MaConsommation.dart';
 import 'package:flutter/material.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
+
+import 'Calculatrice.dart';
+import 'France.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar(int i, {super.key});
@@ -9,13 +13,20 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _current_index = 0;
+  int _current_index = 2;
   @override
   Widget build(BuildContext context) {
+    Widget _selectedTab;
     return DotNavigationBar(
       currentIndex: _current_index,
       //on tap redirect to the page
-      onTap: (index) => setState(() => _current_index = index),
+      onTap: (index) => {
+        setState(() => _current_index = index),
+        _selectedTab = _allTabs[index]!,
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => _selectedTab),
+        )
+      },
 
       dotIndicatorColor: Colors.black,
       // enableFloatingNavBar: true,
@@ -55,3 +66,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 }
+
+Map<int, Widget> _allTabs = {
+  0: Calculatrice(title: 'calculette'),
+  1: France(
+    title: 'France',
+  ),
+  2: MaConsommation(title: 'Accueil'),
+  3: MaConsommation(title: 'Ma consommation'),
+  4: MaConsommation(title: 'Classement'),
+};
