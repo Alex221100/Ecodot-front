@@ -1,6 +1,7 @@
-import 'package:ecodot/top_menu.dart';
+import 'package:ecodot/widgets/top_menu.dart';
 import 'package:flutter/material.dart';
-import 'bottom_navbar.dart';
+import 'widgets/bottom_navbar.dart';
+import 'widgets/top_menu.dart';
 
 void main() {
   runApp(const MyApp());
