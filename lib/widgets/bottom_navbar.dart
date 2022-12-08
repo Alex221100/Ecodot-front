@@ -2,24 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar(int i, {super.key});
+  BottomNavBar({super.key, this.index});
+  final index;
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _current_index = 0;
+  var _currentIndex = widget.index;
+
+  void _handleIndexChanged(int i) {
+    setState(() {
+      _currentIndex = i;
+      Navigator.pushNamed(context, '/my_consumption');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DotNavigationBar(
-      currentIndex: _current_index,
-      //on tap redirect to the page
-      onTap: (index) => setState(() => _current_index = index),
-
+      currentIndex: _currentIndex,
+      onTap: _handleIndexChanged,
       dotIndicatorColor: Colors.black,
-      // enableFloatingNavBar: true,
-      // enablePaddingAnimation: true,
       items: [
         /// Calculator
         DotNavigationBarItem(
@@ -55,3 +60,5 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 }
+
+enum routes { home, my_consumption }
