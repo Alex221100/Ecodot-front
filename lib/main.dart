@@ -1,26 +1,28 @@
-import 'package:ecodot/widgets/top_menu.dart';
-import 'package:flutter/material.dart';
-import 'widgets/bottom_navbar.dart';
-import 'widgets/top_menu.dart';
+import 'package:ecodot/components/bottom_navbar.dart';
+import 'package:ecodot/screens/calculation.dart';
+import 'package:ecodot/screens/france_consumption.dart';
+import 'package:ecodot/screens/home.dart';
+import 'package:ecodot/screens/my_consumption.dart';
+import 'package:ecodot/screens/ranking.dart';
+import "package:flutter/material.dart";
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Ecodot',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: TopMenu(),
-          ),
-          bottomNavigationBar: BottomNavBar(0)),
-    );
-  }
+  Widget build(final BuildContext context) => MaterialApp(
+        title: "Ecodot",
+        debugShowCheckedModeBanner: false,
+        home: const BottomNavbar(),
+        initialRoute: "/",
+        routes: {
+          "/home": (final context) => const Home(),
+          "/my_consumption": (final context) => const MyConsumption(),
+          "/ranking": (final context) => const Ranking(),
+          "/france_consumption": (final context) => const FranceConsumption(),
+          "/calculation": (final context) => const Calculation(),
+        },
+      );
 }
