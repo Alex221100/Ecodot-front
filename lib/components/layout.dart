@@ -14,10 +14,10 @@ class _MyLayout extends State<MyLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60),
+          preferredSize: Size.fromHeight(50),
           child: TopMenu(),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffF4F5FA),
         body: widget.child);
   }
 }
