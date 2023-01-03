@@ -3,6 +3,7 @@ import 'package:ecodot/screens/calculation.dart';
 import 'package:ecodot/screens/france_consumption.dart';
 import 'package:ecodot/screens/home.dart';
 import 'package:ecodot/screens/my_consumption.dart';
+import 'package:ecodot/screens/public/login.dart';
 import 'package:ecodot/screens/ranking.dart';
 import "package:flutter/material.dart";
 
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
           "/ranking": (final context) => const Ranking(),
           "/france_consumption": (final context) => const FranceConsumption(),
           "/calculation": (final context) => const Calculation(),
+          "/login": (context) => const Login(),
         },
       );
 }
