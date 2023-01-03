@@ -13,4 +13,8 @@ class InputFieldDecorationGeneric1 extends InputDecoration {
   final InputBorder focusedBorder = OutlineInputBorder(
       borderSide: BorderSide(width: 2, color: Colors.lightGreenAccent),
       borderRadius: BorderRadius.all(Radius.circular(10)));
+  final EdgeInsets contentPadding = EdgeInsets.symmetric(vertical: 5, horizontal: 10);
+
+
+
 }

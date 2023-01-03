@@ -19,6 +19,6 @@ class _MyLayout extends State<MyLayout> {
           child: TopMenu(),
         ),
         backgroundColor: Colors.white,
-        body: widget.child);
+        body:widget.child);
   }
 }
