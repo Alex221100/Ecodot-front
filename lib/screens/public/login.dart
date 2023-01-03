@@ -131,8 +131,10 @@ class _Login extends State<Login> {
     );
   }
 
-  Map<String, String> get headers =>
-      {"Content-Type": "application/json", "Accept": "application/json"};
+  Map<String, String> get headers => {
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Accept": "application/json"
+      };
 
   Future<http.Response> login(String email, String password) async {
     String body = jsonEncode({'email': email, 'password': password});
@@ -141,8 +143,6 @@ class _Login extends State<Login> {
         Uri.parse("http://localhost:8080/authentication/login"),
         headers: headers,
         body: body);
-
-    print(response);
 
     return response;
   }
