@@ -1,4 +1,5 @@
 import 'package:ecodot/components/bottom_navbar.dart';
+import 'package:ecodot/components/sign_in/sign_in_dataholder.dart';
 import 'package:ecodot/screens/calculation.dart';
 import 'package:ecodot/screens/france_consumption.dart';
 import 'package:ecodot/screens/home.dart';
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(final BuildContext context) => MaterialApp(
+  Widget build(final BuildContext context) => SignInDataHolder(
+          child: MaterialApp(
         title: "Ecodot",
         debugShowCheckedModeBanner: false,
         home: const BottomNavbar(),
@@ -28,5 +30,5 @@ class MyApp extends StatelessWidget {
           "/login": (context) => const Login(),
           "/signin": (context) => const SignIn(),
         },
-      );
+      ));
 }
