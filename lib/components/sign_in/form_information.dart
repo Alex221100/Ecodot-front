@@ -55,6 +55,7 @@ class _FormInformation extends State<FormInformation> {
             Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: TextFormField(
+                    obscureText: true,
                     onChanged: (value) => setState(
                         () => signInDataHolder.user.setPassword(value)),
                     decoration:
@@ -62,6 +63,7 @@ class _FormInformation extends State<FormInformation> {
             Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: TextFormField(
+                    obscureText: true,
                     onChanged: (value) =>
                         setState(() => signInDataHolder.user.toString()),
                     decoration: new InputFieldDecorationGeneric1(

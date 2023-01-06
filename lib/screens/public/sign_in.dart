@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:ecodot/components/sign_in/form_enedis.dart';
 import 'package:ecodot/components/sign_in/form_house.dart';
 import 'package:ecodot/components/sign_in/form_information.dart';
+import 'package:ecodot/components/sign_in/sign_in_dataholder.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -151,8 +155,44 @@ class _SignIn extends State<SignIn> {
     );
   }
 
-  goHome() {
-    Navigator.pushNamed(context, '/home');
+  Map<String, String> get headers => {
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Accept": "application/json"
+      };
+
+  goHome() async {
+    //sign in the user
+    String body = jsonEncode({
+      'lastname': SignInDataHolder.of(context).user.lastname,
+      'firstname': SignInDataHolder.of(context).user.firstname,
+      'email': SignInDataHolder.of(context).user.email,
+      'password': SignInDataHolder.of(context).user.password,
+      'nbPersonHouse': SignInDataHolder.of(context).user.nbPersonHouse,
+      'cityCode': SignInDataHolder.of(context).user.cityCode,
+      'city': SignInDataHolder.of(context).user.city,
+    });
+
+    http.Response response = await http.post(
+        Uri.parse("http://localhost:8080/authentication/signin"),
+        headers: headers,
+        body: body);
+
+    if (response.statusCode == 200) {
+      Navigator.pushNamed(context, '/home');
+      const snackBar = SnackBar(
+        backgroundColor: Colors.green,
+        content: Text("Bienvenue sur Ecodot"),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      const snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text("Une erreur s'est produite. Réessayez plus tard"),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   tapped(int step) {
