@@ -7,6 +7,8 @@ import 'package:ecodot/components/sign_in/sign_in_dataholder.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../main.dart';
+
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
 
@@ -178,7 +180,10 @@ class _SignIn extends State<SignIn> {
         body: body);
 
     if (response.statusCode == 200) {
-      Navigator.pushNamed(context, '/home');
+      Navigator.push(context,
+          MaterialPageRoute<void>(builder: (BuildContext context) {
+        return MyApp();
+      }));
       const snackBar = SnackBar(
         backgroundColor: Colors.green,
         content: Text("Bienvenue sur Ecodot"),

@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'package:ecodot/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../../components/layout.dart';
+import '../../main.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -97,7 +101,10 @@ class _Login extends State<Login> {
                     print(req.body);
                     if (req.statusCode == 200) {
                       print(req.body);
-                      Navigator.pushNamed(context, '/home');
+                      Navigator.push(context, MaterialPageRoute<void>(
+                          builder: (BuildContext context) {
+                        return MyApp();
+                      }));
                     }
                   },
                   child: const Text(
