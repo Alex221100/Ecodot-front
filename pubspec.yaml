@@ -67,6 +67,8 @@ assets:
     - assets/avatar-default.png
     - assets/ecodot.png
     - assets/ecodot-with-name.png
+    - assets/electricity.png
+    - assets/question.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
