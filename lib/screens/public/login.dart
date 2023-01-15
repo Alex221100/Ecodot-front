@@ -98,9 +98,7 @@ class _Login extends State<Login> {
                   ),
                   onPressed: () async {
                     http.Response req = await login(email, password);
-                    print(req.body);
                     if (req.statusCode == 200) {
-                      print(req.body);
                       Navigator.push(context, MaterialPageRoute<void>(
                           builder: (BuildContext context) {
                         return MyApp();

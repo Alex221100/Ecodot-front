@@ -1,6 +1,8 @@
+import 'package:ecodot/screens/guide.dart';
 import 'package:flutter/material.dart';
 
 import '../components/layout.dart';
+import '../main.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -158,7 +160,12 @@ class _Home extends State<Home> {
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
                               ),
-                              onPressed: () async {},
+                              onPressed: () async {
+                                Navigator.push(context, MaterialPageRoute<void>(
+                                    builder: (BuildContext context) {
+                                  return Guide();
+                                }));
+                              },
                               child: const Text(
                                 'Voir',
                                 style: TextStyle(fontSize: 15),
