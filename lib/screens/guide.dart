@@ -26,44 +26,48 @@ class _Guide extends State<Guide> {
                 builder: (BuildContext context,
                     AsyncSnapshot<List<GoodPractise>> snapshot) {
                   List<Widget> list = [];
-                  for (var i = 0; i < snapshot.data!.length; i++) {
-                    list.add(SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 200,
-                      child: Card(
-                        margin: const EdgeInsets.all(10),
-                        color: Colors.white,
-                        shadowColor: Colors.blueGrey,
-                        elevation: 10,
-                        child: GridView.extent(
-                          primary: false,
-                          crossAxisSpacing: 1,
-                          mainAxisSpacing: 2,
-                          physics: NeverScrollableScrollPhysics(),
-                          maxCrossAxisExtent: 200.0,
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(8),
-                                child: Column(
-                                  children: [
-                                    Text(snapshot.data![i].title,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12)),
-                                    Text(snapshot.data![i].description,
-                                        style: TextStyle(fontSize: 10))
-                                  ],
-                                )),
-                            Container(
-                                padding: const EdgeInsets.all(8),
-                                child: Image.memory(
-                                    base64Decode(snapshot.data![i].image))),
-                          ],
+                  if (snapshot.hasData) {
+                    for (var i = 0; i < snapshot.data!.length; i++) {
+                      list.add(SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 200,
+                        child: Card(
+                          margin: const EdgeInsets.all(10),
+                          color: Colors.white,
+                          shadowColor: Colors.blueGrey,
+                          elevation: 10,
+                          child: GridView.extent(
+                            primary: false,
+                            crossAxisSpacing: 1,
+                            mainAxisSpacing: 2,
+                            physics: NeverScrollableScrollPhysics(),
+                            maxCrossAxisExtent: 200.0,
+                            children: [
+                              Container(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(
+                                    children: [
+                                      Text(snapshot.data![i].title,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12)),
+                                      Text(snapshot.data![i].description,
+                                          style: TextStyle(fontSize: 10))
+                                    ],
+                                  )),
+                              Container(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Image.memory(
+                                      base64Decode(snapshot.data![i].image))),
+                            ],
+                          ),
                         ),
-                      ),
-                    ));
+                      ));
+                    }
+
+                    return Column(children: list);
                   }
-                  return Column(children: list);
+                  return CircularProgressIndicator();
                 },
               ),
             ],
