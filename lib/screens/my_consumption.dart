@@ -13,16 +13,16 @@ class MyConsumption extends StatefulWidget {
 class _MyConsumption extends State<MyConsumption> {
   titleComponent(int index) {
     switch (index) {
-      case 1:
+      case 0:
         return const Text("Consommation de la journée :",
             style: TextStyle(fontWeight: FontWeight.bold));
-      case 2:
+      case 1:
         return const Text("Consommation de la semaine :",
             style: TextStyle(fontWeight: FontWeight.bold));
-      case 3:
+      case 2:
         return const Text("Consommation du mois :",
             style: TextStyle(fontWeight: FontWeight.bold));
-      case 4:
+      case 3:
         return const Text("Consommation de l'année :",
             style: TextStyle(fontWeight: FontWeight.bold));
     }
@@ -30,6 +30,15 @@ class _MyConsumption extends State<MyConsumption> {
 
   doubleValueWithGoodUnit(int index) {
     switch (index) {
+      case 0:
+        return const DoubleValueTextWithCircle(
+          consumption: 40.5,
+          currency: '€',
+          priceInCents: 40.5 * 27,
+          foregroundColor: Color(0xff56CA00),
+          maxValue: 100,
+          unit: Unit.kWh,
+        );
       case 1:
         return const DoubleValueTextWithCircle(
           consumption: 40.5,
@@ -49,15 +58,6 @@ class _MyConsumption extends State<MyConsumption> {
           unit: Unit.kWh,
         );
       case 3:
-        return const DoubleValueTextWithCircle(
-          consumption: 40.5,
-          currency: '€',
-          priceInCents: 40.5 * 27,
-          foregroundColor: Color(0xff56CA00),
-          maxValue: 100,
-          unit: Unit.kWh,
-        );
-      case 4:
         return const DoubleValueTextWithCircle(
           consumption: 40.5,
           currency: '€',
