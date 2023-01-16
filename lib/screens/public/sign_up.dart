@@ -9,14 +9,14 @@ import 'package:http/http.dart' as http;
 
 import '../../main.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
 
   @override
-  State<SignIn> createState() => _SignIn();
+  State<SignUp> createState() => _SignUp();
 }
 
-class _SignIn extends State<SignIn> {
+class _SignUp extends State<SignUp> {
   int _currentStep = 0;
 
   @override
@@ -175,7 +175,7 @@ class _SignIn extends State<SignIn> {
     });
 
     http.Response response = await http.post(
-        Uri.parse("http://localhost:8080/authentication/signin"),
+        Uri.parse("http://localhost:8080/authentication/signup"),
         headers: headers,
         body: body);
 
