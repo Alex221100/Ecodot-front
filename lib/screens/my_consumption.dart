@@ -11,6 +11,74 @@ class MyConsumption extends StatefulWidget {
 }
 
 class _MyConsumption extends State<MyConsumption> {
+  titleComponent(int index) {
+    switch (index) {
+      case 1:
+        return const Text("Consommation de la journée :",
+            style: TextStyle(fontWeight: FontWeight.bold));
+      case 2:
+        return const Text("Consommation de la semaine :",
+            style: TextStyle(fontWeight: FontWeight.bold));
+      case 3:
+        return const Text("Consommation du mois :",
+            style: TextStyle(fontWeight: FontWeight.bold));
+      case 4:
+        return const Text("Consommation de l'année :",
+            style: TextStyle(fontWeight: FontWeight.bold));
+    }
+  }
+
+  doubleValueWithGoodUnit(int index) {
+    switch (index) {
+      case 1:
+        return const DoubleValueTextWithCircle(
+          consumption: 40.5,
+          currency: '€',
+          priceInCents: 40.5 * 27,
+          foregroundColor: Color(0xff56CA00),
+          maxValue: 100,
+          unit: Unit.kWh,
+        );
+      case 2:
+        return const DoubleValueTextWithCircle(
+          consumption: 40.5,
+          currency: '€',
+          priceInCents: 40.5 * 27,
+          foregroundColor: Color(0xff56CA00),
+          maxValue: 100,
+          unit: Unit.kWh,
+        );
+      case 3:
+        return const DoubleValueTextWithCircle(
+          consumption: 40.5,
+          currency: '€',
+          priceInCents: 40.5 * 27,
+          foregroundColor: Color(0xff56CA00),
+          maxValue: 100,
+          unit: Unit.kWh,
+        );
+      case 4:
+        return const DoubleValueTextWithCircle(
+          consumption: 40.5,
+          currency: '€',
+          priceInCents: 40.5 * 27,
+          foregroundColor: Color(0xff56CA00),
+          maxValue: 100,
+          unit: Unit.kWh,
+        );
+
+      default:
+        return const DoubleValueTextWithCircle(
+          consumption: 40.5,
+          currency: '€',
+          priceInCents: 40.5 * 27,
+          foregroundColor: Color(0xff56CA00),
+          maxValue: 100,
+          unit: Unit.kWh,
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MyLayout(
@@ -52,17 +120,8 @@ class _MyConsumption extends State<MyConsumption> {
                   Container(
                       alignment: Alignment.topCenter,
                       padding: EdgeInsets.only(top: 25, bottom: 25),
-                      child: const Text(
-                          "Consommation de la journée :", //mettre un if si index = 1 2 3 4
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  const DoubleValueTextWithCircle(
-                    consumption: 40.5, //pareil ici mettre un if
-                    currency: '€',
-                    priceInCents: 40.5 * 27, //pareil ici mettre un if
-                    foregroundColor: const Color(0xff56CA00),
-                    maxValue: 100,
-                    unit: Unit.kWh,
-                  ),
+                      child: titleComponent(itemIndex)),
+                  doubleValueWithGoodUnit(itemIndex),
                 ],
               ),
             ),
