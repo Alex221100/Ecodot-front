@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ecodot/components/application_dataholder.dart';
 import 'package:ecodot/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,7 @@ class _Login extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final applicationDataHolder = ApplicationDataHolder.of(context);
     return Scaffold(
       backgroundColor: const Color(0xffF4F5FA),
       body: Container(
@@ -99,6 +101,8 @@ class _Login extends State<Login> {
                   onPressed: () async {
                     http.Response req = await login(email, password);
                     if (req.statusCode == 200) {
+                      applicationDataHolder.applicationStorage
+                          .setToken(req.body);
                       Navigator.pushNamed(context, "/");
                     }
                   },

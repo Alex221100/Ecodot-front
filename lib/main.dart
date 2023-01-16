@@ -13,6 +13,8 @@ import 'package:ecodot/screens/public/sign_up.dart';
 import 'package:ecodot/screens/ranking.dart';
 import "package:flutter/material.dart";
 
+import 'components/application_dataholder.dart';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -20,7 +22,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => SignInDataHolder(
-          child: MaterialApp(
+          child: ApplicationDataHolder(
+              child: MaterialApp(
         title: "Ecodot",
         debugShowCheckedModeBanner: false,
         home: const BottomNavbar(),
@@ -38,5 +41,5 @@ class MyApp extends StatelessWidget {
           "/setup2": (final context) => const Setup2(),
           "/setup3": (final context) => const Setup3()
         },
-      ));
+      )));
 }
