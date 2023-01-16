@@ -1,7 +1,15 @@
+import 'dart:convert';
+
 import 'package:ecodot/components/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:ecodot/components/double_value_text_with_circle.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
+import 'package:http/http.dart' as http;
+
+import '../model/my_consumption_model.dart';
+
+
 
 class MyConsumption extends StatefulWidget {
   const MyConsumption({super.key});
@@ -81,6 +89,9 @@ class _MyConsumption extends State<MyConsumption> {
 
   @override
   Widget build(BuildContext context) {
+    //print(getConsumptionsFromApi());
+    Future<MyConsumptionModel> mcm = getConsumptionsFromApi();
+    print(mcm.then((value) => print(value)));
     return MyLayout(
         child: Column(children: [
       Container(
@@ -162,5 +173,30 @@ class _MyConsumption extends State<MyConsumption> {
         ),
       )
     ]));
+  }
+  
+
+  Map<String, String> get headers => {
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Accept": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      };
+
+  Future<MyConsumptionModel> getConsumptionsFromApi() async {
+    http.Response response = await http
+.get(Uri.parse("http://localhost:8080/myconsumption/all"), headers: headers);
+
+    MyConsumptionModel mcm = MyConsumptionModel();
+    //print(jsonDecode(response.body));
+    print("===================================================");
+
+    if (response.statusCode == 200) {
+      //print(jsonDecode(response.body));
+      //mcm.fromJson(response.body);
+    //MyConsumptionModel mcm = MyConsumptionModel();
+    return mcm; 
+    } else {
+      throw Exception("Failed to load user's consumptions");
+    }
   }
 }
