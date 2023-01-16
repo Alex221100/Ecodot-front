@@ -175,7 +175,7 @@ class _SignUp extends State<SignUp> {
     });
 
     http.Response response = await http.post(
-        Uri.parse("http://localhost:8080/authentication/signin"),
+        Uri.parse("http://localhost:8080/authentication/signup"),
         headers: headers,
         body: body);
 
