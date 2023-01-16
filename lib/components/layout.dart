@@ -13,11 +13,12 @@ class _MyLayout extends State<MyLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: const PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: TopMenu(),
         ),
         backgroundColor: Colors.white,
-        body: widget.child);
+        body: SingleChildScrollView(child: widget.child));
   }
 }
