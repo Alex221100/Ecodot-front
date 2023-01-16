@@ -6,6 +6,9 @@ import 'package:ecodot/screens/guide.dart';
 import 'package:ecodot/screens/home.dart';
 import 'package:ecodot/screens/my_consumption.dart';
 import 'package:ecodot/screens/public/login.dart';
+import 'package:ecodot/screens/public/setup2.dart';
+import 'package:ecodot/screens/public/setup1.dart';
+import 'package:ecodot/screens/public/setup3.dart';
 import 'package:ecodot/screens/public/sign_up.dart';
 import 'package:ecodot/screens/ranking.dart';
 import "package:flutter/material.dart";
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
         title: "Ecodot",
         debugShowCheckedModeBanner: false,
         home: const BottomNavbar(),
-        initialRoute: "/",
+        initialRoute: "/login",
         routes: {
           "/home": (final context) => const Home(),
           "/my_consumption": (final context) => const MyConsumption(),
@@ -31,6 +34,9 @@ class MyApp extends StatelessWidget {
           "/login": (context) => const Login(),
           "/signup": (context) => const SignUp(),
           "/guide": (context) => const Guide(),
+          "/setup1": (final context) => const Setup1(),
+          "/setup2": (final context) => const Setup2(),
+          "/setup3": (final context) => const Setup3()
         },
       ));
 }

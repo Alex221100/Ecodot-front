@@ -99,10 +99,7 @@ class _Login extends State<Login> {
                   onPressed: () async {
                     http.Response req = await login(email, password);
                     if (req.statusCode == 200) {
-                      Navigator.push(context, MaterialPageRoute<void>(
-                          builder: (BuildContext context) {
-                        return MyApp();
-                      }));
+                      Navigator.pushNamed(context, "/");
                     }
                   },
                   child: const Text(
