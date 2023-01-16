@@ -11,6 +11,10 @@ class Ranking extends StatefulWidget {
 class _Ranking extends State<Ranking> {
   @override
   Widget build(BuildContext context) {
-    return const MyLayout(child: Text("Ranking"));
+    return const MyLayout(child: FutureBuilder(future: Future.wait()
+        builder: (context, AsyncSnapshot snapshot) {
+
+
+    }));
   }
 }
