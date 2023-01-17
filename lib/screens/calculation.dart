@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import '../components/inputfields.dart';
 import '../rest/conso.dart';
 
-//TODO Tarif du kWh persisté (cache/sharedpreferences)
-
 class Calculation extends StatefulWidget {
   const Calculation({super.key});
 
