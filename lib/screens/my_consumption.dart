@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ecodot/components/layout.dart';
 import 'package:flutter/material.dart';
@@ -36,42 +37,52 @@ class _MyConsumption extends State<MyConsumption> {
     }
   }
 
-  doubleValueWithGoodUnit(int index) {
+  doubleValueWithGoodUnit(int index, [MyConsumptionModel? mcm]) {
+    double? day = mcm?.getDailyConsumption();
+    double? week = mcm?.getWeeklyConsumption();
+    double? month = mcm?.getMonthlyConsumption();
+    double? year = mcm?.getYearlyConsumption();
+
+    double daycons = day ?? 0;
+    double weekcons = week ?? 0;
+    double monthcons = month ?? 0;
+    double yearcons = year ?? 0;
+    
     switch (index) {
       case 0:
-        return const DoubleValueTextWithCircle(
-          consumption: 40.5,
+        return DoubleValueTextWithCircle(
+          consumption: daycons,
           currency: '€',
-          priceInCents: 40.5 * 27,
+          priceInCents: daycons * 0.1841,
           foregroundColor: Color(0xff56CA00),
-          maxValue: 100,
+          maxValue: 12.5,
           unit: Unit.kWh,
         );
       case 1:
-        return const DoubleValueTextWithCircle(
-          consumption: 40.5,
+        return DoubleValueTextWithCircle(
+          consumption: weekcons,
           currency: '€',
-          priceInCents: 40.5 * 27,
+          priceInCents: weekcons * 0.1841,
           foregroundColor: Color(0xff56CA00),
-          maxValue: 100,
+          maxValue: 87.5,
           unit: Unit.kWh,
         );
       case 2:
-        return const DoubleValueTextWithCircle(
-          consumption: 40.5,
+        return DoubleValueTextWithCircle(
+          consumption: monthcons,
           currency: '€',
-          priceInCents: 40.5 * 27,
+          priceInCents: monthcons * 0.1841,
           foregroundColor: Color(0xff56CA00),
-          maxValue: 100,
+          maxValue: 390,
           unit: Unit.kWh,
         );
       case 3:
-        return const DoubleValueTextWithCircle(
-          consumption: 40.5,
+        return DoubleValueTextWithCircle(
+          consumption: yearcons,
           currency: '€',
-          priceInCents: 40.5 * 27,
+          priceInCents: yearcons * 0.1841,
           foregroundColor: Color(0xff56CA00),
-          maxValue: 100,
+          maxValue: 4679,
           unit: Unit.kWh,
         );
 
@@ -89,9 +100,7 @@ class _MyConsumption extends State<MyConsumption> {
 
   @override
   Widget build(BuildContext context) {
-    //print(getConsumptionsFromApi());
     Future<MyConsumptionModel> mcm = getConsumptionsFromApi();
-    print(mcm.then((value) => print(value)));
     return MyLayout(
         child: Column(children: [
       Container(
@@ -132,7 +141,14 @@ class _MyConsumption extends State<MyConsumption> {
                       alignment: Alignment.topCenter,
                       padding: EdgeInsets.only(top: 25, bottom: 25),
                       child: titleComponent(itemIndex)),
-                  doubleValueWithGoodUnit(itemIndex),
+                    FutureBuilder<MyConsumptionModel>(
+                      future: getConsumptionsFromApi(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<MyConsumptionModel> mcm) {
+                              return doubleValueWithGoodUnit(itemIndex, mcm.data);
+                          }
+                    )
+                  //doubleValueWithGoodUnit(itemIndex, mcm),
                 ],
               ),
             ),
@@ -174,26 +190,17 @@ class _MyConsumption extends State<MyConsumption> {
       )
     ]));
   }
-  
-
-  Map<String, String> get headers => {
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Accept": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      };
-
+  String get token => "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4QGdtYWlsLmNvZWVlbSIsImV4cCI6MTY3Mzk5NTgzNCwiaWF0IjoxNjczOTc3ODM0fQ.dmJjxYT3O47Qv8Xa1SmZH3OlexOhcOh8w6hkIsllnd_RDq64Wu3WzWst-nn1xU_iYh0ffG9py9zgCMhI7GiwhA";
   Future<MyConsumptionModel> getConsumptionsFromApi() async {
     http.Response response = await http
-.get(Uri.parse("http://localhost:8080/myconsumption/all"), headers: headers);
-
-    MyConsumptionModel mcm = MyConsumptionModel();
-    //print(jsonDecode(response.body));
-    print("===================================================");
-
+      .get(Uri.parse("http://localhost:8080/myconsumption/all"), headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': "application/json",
+      }
+    );
     if (response.statusCode == 200) {
-      //print(jsonDecode(response.body));
-      //mcm.fromJson(response.body);
-    //MyConsumptionModel mcm = MyConsumptionModel();
+      MyConsumptionModel mcm = MyConsumptionModel.fromJson(jsonDecode(response.body));
     return mcm; 
     } else {
       throw Exception("Failed to load user's consumptions");

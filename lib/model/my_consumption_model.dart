@@ -1,17 +1,17 @@
 class MyConsumptionModel {
-  late String dailyConsumption;
-  late String weeklyConsumption;
-  late String monthlyConsumption;
-  late String yearlyConsumption;
+  late double dailyConsumption;
+  late double weeklyConsumption;
+  late double monthlyConsumption;
+  late double yearlyConsumption;
   late String date;
 
   MyConsumptionModel();
 
   MyConsumptionModel.fromJson(Map<String, dynamic> json):
-    dailyConsumption = json["dailyConsumption"],
-    weeklyConsumption = json["weeklyConsumption"],
-    monthlyConsumption = json["monthlyConsumption"],
-    yearlyConsumption = json["yearlyConsumption"],
+    dailyConsumption = json["dayConsumtion"],
+    weeklyConsumption = json["weekConsumtion"],
+    monthlyConsumption = json["monthConsumtion"],
+    yearlyConsumption = json["yearConsumtion"],
     date = json["date"];
 
   Map<String, dynamic> toJson() =>
@@ -22,4 +22,11 @@ class MyConsumptionModel {
         "yearlyConsumption": yearlyConsumption,
         "date": date
       };
+
+  //getter setter
+  double? getDailyConsumption() => dailyConsumption/1000;
+  double? getWeeklyConsumption() => weeklyConsumption/1000;
+  double? getMonthlyConsumption() => monthlyConsumption/1000;
+  double? getYearlyConsumption() => yearlyConsumption/1000;
+  String? getDate() => date;
 }
