@@ -13,15 +13,12 @@ class _TopMenu extends State<TopMenu> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      leading: const Icon(
-        Icons.menu,
-        color: Colors.black,
-      ),
-      title: const Text(
-        "Ecodot",
-        style: TextStyle(color: Colors.black),
+      title: const SizedBox(
+        width: 70,
+        height: 70,
+        child: Center(
+          child: Image(image: AssetImage('ecodot.png')),
+        ),
       ),
       actions: [
         IconButton(
@@ -36,6 +33,28 @@ class _TopMenu extends State<TopMenu> {
             );
           },
         ),
+        Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: IconButton(
+            icon: const Icon(Icons.notifications),
+            color: const Color.fromRGBO(83, 78, 89, 0.8),
+            onPressed: () {},
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.contain,
+                image: AssetImage('avatar-default.png'),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

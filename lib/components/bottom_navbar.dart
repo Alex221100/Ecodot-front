@@ -20,23 +20,13 @@ class _BottomNavbarState extends State<BottomNavbar> {
     return PersistentTabView(
       context,
       screens: const [
-        Calculation(),
-        FranceConsumption(),
         Home(),
         MyConsumption(),
-        Ranking()
+        Ranking(),
+        Calculation(),
+        FranceConsumption(),
       ],
       items: [
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.calculate_outlined),
-          activeColorPrimary: MyColor.activeColor,
-          inactiveColorPrimary: MyColor.inactiveColor,
-        ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.flag_outlined),
-          activeColorPrimary: MyColor.activeColor,
-          inactiveColorPrimary: MyColor.inactiveColor,
-        ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.home_outlined),
           activeColorPrimary: MyColor.activeColor,
@@ -49,6 +39,16 @@ class _BottomNavbarState extends State<BottomNavbar> {
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.leaderboard_outlined),
+          activeColorPrimary: MyColor.activeColor,
+          inactiveColorPrimary: MyColor.inactiveColor,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(Icons.calculate_outlined),
+          activeColorPrimary: MyColor.activeColor,
+          inactiveColorPrimary: MyColor.inactiveColor,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(Icons.flag_outlined),
           activeColorPrimary: MyColor.activeColor,
           inactiveColorPrimary: MyColor.inactiveColor,
         )

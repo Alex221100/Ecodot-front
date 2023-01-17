@@ -5,3 +5,8 @@ class MyColor {
   static Color inactiveColor = const Color(0xff534e59);
   static Color activeColor = const Color(0xff27AF56);
 }
+
+class AppConstants{
+  final rootURI = "http://10.0.2.2";
+  final rootPort = "8080";
+}
