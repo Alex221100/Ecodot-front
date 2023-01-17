@@ -25,7 +25,9 @@ class Challenges{
   factory Challenges.fromJson(Map<String, dynamic> json) {
     List<dynamic> jsonlist = json['challengeList'];
     List<Challenge> outputlist = [];
-    jsonlist.forEach((element) { outputlist.add(element);});
+    jsonlist.forEach((element) {
+      Challenge challenge = new Challenge(element['title'], element['description']) ;
+      outputlist.add(challenge);});
 
     return Challenges(challengeList: outputlist);
   }

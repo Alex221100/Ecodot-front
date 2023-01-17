@@ -21,8 +21,9 @@ class UserScoreDTO{
   final String email;
   final String password;
   final String firstname;
+  final String lastname;
 
-  UserScoreDTO(this.email,this.password, this.firstname);
+  UserScoreDTO(this.email,this.password, this.firstname, this.lastname);
 }
 
 //Cette classe représente le retour de l'API back concernant le scoring
@@ -36,10 +37,15 @@ class TopScoreDTO{
   factory TopScoreDTO.fromJson(Map<String, dynamic> json) {
     List<dynamic> JSONScoreList = json['scores'];
     List<ScoreDTO> scoreList = [];
-    JSONScoreList.forEach((element) { scoreList.add(element);});
+    for (var element in JSONScoreList) {
+      ScoreDTO scoreDTO = ScoreDTO(element['usermail'], element['score'].toString());
+      scoreList.add(scoreDTO);}
     List<dynamic> JSONUserlist = json['users'];
     List<UserScoreDTO> userList = [];
-    JSONUserlist.forEach((element) { userList.add(element);});
+    for (var element in JSONUserlist) {
+      UserScoreDTO userScoreDTO = UserScoreDTO(element['email'],"", element['firstname'], element['lastname']);
+      userList.add(userScoreDTO);
+    }
 
 
 
