@@ -7,6 +7,6 @@ class MyColor {
 }
 
 class AppConstants{
-  final rootURI = "http://10.0.2.2";
+  final rootURI = "http://localhost";
   final rootPort = "8080";
 }
