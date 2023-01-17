@@ -1,6 +1,7 @@
 import 'package:ecodot/screens/guide.dart';
 import 'package:flutter/material.dart';
 
+import '../components/application_dataholder.dart';
 import '../components/layout.dart';
 import '../main.dart';
 
@@ -14,6 +15,7 @@ class Home extends StatefulWidget {
 class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    final applicationDataHolder = ApplicationDataHolder.of(context);
     return MyLayout(
       child: SingleChildScrollView(
         child: Column(
