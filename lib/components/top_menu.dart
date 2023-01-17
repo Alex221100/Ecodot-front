@@ -56,6 +56,7 @@ class _TopMenu extends State<TopMenu> {
           ),
         )
       ],
+      elevation: 0,
     );
   }
 }

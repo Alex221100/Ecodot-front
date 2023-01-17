@@ -53,12 +53,19 @@ class _BottomNavbarState extends State<BottomNavbar> {
           inactiveColorPrimary: MyColor.inactiveColor,
         )
       ],
-      margin: const EdgeInsets.all(30),
+      margin: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 15),
       confineInSafeArea: false,
-      navBarStyle: NavBarStyle.style5,
+      navBarStyle: NavBarStyle.style12,
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(30.0),
         colorBehindNavBar: MyColor.background,
+        boxShadow: [
+          BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: const Offset(0, 3))
+        ],
       ),
     );
   }
