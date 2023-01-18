@@ -20,7 +20,7 @@ class _TopMenu extends State<TopMenu> {
         width: 70,
         height: 70,
         child: Center(
-          child: Image(image: AssetImage('ecodot.png')),
+          child: Image(image: AssetImage('assets/ecodot.png')),
         ),
       ),
       backgroundColor: const Color(0xffF4F5FA),

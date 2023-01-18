@@ -1,7 +1,7 @@
 class FranceConsumptionValue {
   final String startDate;
   final String endDate;
-  final String updatedDate;
+  final String? updatedDate;
   final double value;
 
   FranceConsumptionValue(

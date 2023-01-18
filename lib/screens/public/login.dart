@@ -31,7 +31,7 @@ class _Login extends State<Login> {
             children: [
               const Center(
                 child: Image(
-                  image: AssetImage('../assets/ecodot-with-name.png'),
+                  image: AssetImage('assets/ecodot-with-name.png'),
                   height: 160,
                 ),
               ),
@@ -104,11 +104,12 @@ class _Login extends State<Login> {
                           .setToken(req.body);
 
                       //Stockages sharedpreferences
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       prefs.setString("currentusermail", email);
                       Challenges challenges = await fetchChallenges(3, []);
                       List<String> challengetitles = [];
-                      for(Challenge challenge in challenges.challengeList){
+                      for (Challenge challenge in challenges.challengeList) {
                         challengetitles.add(challenge.title);
                       }
                       prefs.setStringList("challengetitles", challengetitles);

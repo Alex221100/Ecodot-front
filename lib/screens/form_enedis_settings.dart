@@ -34,7 +34,7 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
             children: [
               const Center(
                 child: Image(
-                  image: AssetImage('../assets/ecodot-with-name.png'),
+                  image: AssetImage('assets/ecodot-with-name.png'),
                   height: 160,
                 ),
               ),
@@ -101,7 +101,8 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
                     shadowColor: Colors.transparent,
                   ),
                   onPressed: () async {
-                    http.Response req = await saveTokenPDL(token, enedisToken, enedisPDL);
+                    http.Response req =
+                        await saveTokenPDL(token, enedisToken, enedisPDL);
                     if (req.statusCode == 200) {
                       applicationDataHolder.applicationStorage
                           .setToken(req.body);
@@ -143,16 +144,20 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
         "Accept": "application/json"
       };
 
-
-  Future<http.Response> saveTokenPDL(String token, String enedisToken, String enedisPDL) async {
-    String body = jsonEncode({'userToken': token, 'enedisToken': enedisToken, 'enedisPDL':enedisPDL});
-    http.Response responseSetup = await http
-      .post(Uri.parse("http://localhost:8080/myconsumption/setupEnedis"), headers: {
-        'Content-Type': 'application/json',
-        'Accept': "application/json",
-      },
-        body: body
-    );
+  Future<http.Response> saveTokenPDL(
+      String token, String enedisToken, String enedisPDL) async {
+    String body = jsonEncode({
+      'userToken': token,
+      'enedisToken': enedisToken,
+      'enedisPDL': enedisPDL
+    });
+    http.Response responseSetup = await http.post(
+        Uri.parse("http://localhost:8080/myconsumption/setupEnedis"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': "application/json",
+        },
+        body: body);
     if (responseSetup.statusCode == 200) {
       return responseSetup;
     } else {
