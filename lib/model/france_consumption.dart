@@ -11,5 +11,5 @@ class FranceConsumptionValue {
       : startDate = json["start_date"],
         endDate = json["end_date"],
         updatedDate = json["updated_date"],
-        value = json["value"];
+        value = json["value"].toDouble();
 }

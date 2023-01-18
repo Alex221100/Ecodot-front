@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../components/layout.dart';
 import '../main.dart';
+import '../utils/constants.dart';
 
 class FormEnedisSettings extends StatefulWidget {
   const FormEnedisSettings({super.key});
@@ -152,7 +153,10 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
       'enedisPDL': enedisPDL
     });
     http.Response responseSetup = await http.post(
-        Uri.parse("http://localhost:8080/myconsumption/setupEnedis"),
+        Uri.parse(AppConstants().rootURI +
+            ":" +
+            AppConstants().rootPort +
+            "/myconsumption/setupEnedis"),
         headers: {
           'Content-Type': 'application/json',
           'Accept': "application/json",
