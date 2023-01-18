@@ -134,7 +134,7 @@ class _Ranking extends State<Ranking> {
                 return Container(
                     alignment: Alignment.topCenter,
                     padding: EdgeInsets.only(top: 15),
-                    height: 1100,
+                    height: 1075,
                     child: FractionallySizedBox(
                         widthFactor: 0.9,
                         heightFactor: 0.9,
@@ -164,7 +164,10 @@ class _Ranking extends State<Ranking> {
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))),
-                                  FractionallySizedBox(
+                                  Container
+                                  (
+                                      padding: EdgeInsets.only(bottom: 10),
+                                      child:FractionallySizedBox(
                                       widthFactor: 0.9,
                                       child: Container(
                                           child: DataTable(
@@ -174,7 +177,7 @@ class _Ranking extends State<Ranking> {
                                           DataColumn(label: Text("Score")),
                                         ],
                                         rows: rankingRowsList,
-                                      )))
+                                      ))))
                                 ])),
                             Container(
                               padding: EdgeInsets.all(7),

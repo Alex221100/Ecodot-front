@@ -75,8 +75,14 @@ class TopScoreDTO {
     List<dynamic> JSONUserlist = json['users'];
     List<TopScoreUserDTO> userList = [];
     for (var element in JSONUserlist) {
+      String email = element['email'] == null ? "":element['email'];
+      String firstname = element['firstname'] == null ? "":element['firstname'];
+      String lastname = element['lastname'] == null ? "":element['lastname'];
+
+
+
       TopScoreUserDTO userScoreDTO = TopScoreUserDTO(
-          element['email'], "", element['firstname'], element['lastname']);
+          email, "", firstname, lastname);
       userList.add(userScoreDTO);
     }
     return TopScoreDTO(scores: scoreList, users: userList);
