@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:ecodot/components/application_dataholder.dart';
 import 'package:ecodot/components/layout.dart';
 import 'package:ecodot/model/application_storage.dart';
+import 'package:ecodot/screens/form_enedis_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:ecodot/components/double_value_text_with_circle.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -56,7 +58,8 @@ class _MyConsumption extends State<MyConsumption> {
           currency: '€',
           priceInCents: daycons * 0.1841,
           foregroundColor: Color(0xff56CA00),
-          maxValue: 12.5,
+          //maxValue: 12.5, set exemple value for demo
+          maxValue: daycons * 1.2,
           unit: Unit.kWh,
         );
       case 1:
@@ -65,7 +68,8 @@ class _MyConsumption extends State<MyConsumption> {
           currency: '€',
           priceInCents: weekcons * 0.1841,
           foregroundColor: Color(0xff56CA00),
-          maxValue: 87.5,
+          //maxValue: 87.5, set exemple value for demo
+          maxValue: weekcons * 1.34,
           unit: Unit.kWh,
         );
       case 2:
@@ -74,7 +78,8 @@ class _MyConsumption extends State<MyConsumption> {
           currency: '€',
           priceInCents: monthcons * 0.1841,
           foregroundColor: Color(0xff56CA00),
-          maxValue: 390,
+          //maxValue: 390, set exemple value for demo
+          maxValue: monthcons * 1.111,
           unit: Unit.kWh,
         );
       case 3:
@@ -83,7 +88,8 @@ class _MyConsumption extends State<MyConsumption> {
           currency: '€',
           priceInCents: yearcons * 0.1841,
           foregroundColor: Color(0xff56CA00),
-          maxValue: 4679,
+          //maxValue: 4679, set exemple value for demo
+          maxValue: yearcons * 1.34,
           unit: Unit.kWh,
         );
 
@@ -205,11 +211,28 @@ class _MyConsumption extends State<MyConsumption> {
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': "application/json",
         });
+        print(response.body);
     if (response.statusCode == 200) {
       MyConsumptionModel mcm =
           MyConsumptionModel.fromJson(jsonDecode(response.body));
       return mcm;
-    } else {
+    } else if (response.statusCode == 204 || response.statusCode == 400) {
+      Flushbar(
+          duration: Duration(seconds: 3),
+          flushbarPosition: FlushbarPosition.TOP,
+          message:
+              "Veuillez vérifier vos données Enedis.",
+          backgroundColor: Colors.red,
+        )..show(context);
+        Navigator.push(context, new MaterialPageRoute(
+          builder: (context) =>
+          new FormEnedisSettings())
+        );
+        return MyConsumptionModel();
+      } else if (response.statusCode == 429) {
+      throw Exception("We're working on it, please retry later(Like tomorrow)");
+    }
+    else{
       throw Exception("Failed to load user's consumptions");
     }
   }
