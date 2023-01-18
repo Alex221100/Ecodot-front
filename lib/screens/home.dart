@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/application_dataholder.dart';
 import '../components/layout.dart';
+import '../components/spline_area.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -115,8 +116,8 @@ class _Home extends State<Home> {
                                     child: Row(
                                       children: [
                                         Image(
-                                            image:
-                                                AssetImage('assets/electricity.png')),
+                                            image: AssetImage(
+                                                'assets/electricity.png')),
                                         Padding(
                                           padding: EdgeInsets.only(
                                               top: 10, bottom: 10),
@@ -200,7 +201,8 @@ class _Home extends State<Home> {
                                     Padding(
                                         padding: EdgeInsets.only(top: 10),
                                         child: Image(
-                                          image: AssetImage('assets/question.png'),
+                                          image:
+                                              AssetImage('assets/question.png'),
                                           height: 60,
                                           width: 60,
                                         )),
@@ -269,10 +271,10 @@ class _Home extends State<Home> {
                                 shadowColor: Colors.blueGrey,
                                 elevation: 10,
                                 child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                    ),
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: const [
+                                    SplineArea(),
                                   ],
                                 ),
                               ),
@@ -283,7 +285,8 @@ class _Home extends State<Home> {
                     ],
                   ),
                 );
-              }else return const Center(child: CircularProgressIndicator());
+              } else
+                return const Center(child: CircularProgressIndicator());
             }));
   }
 }
