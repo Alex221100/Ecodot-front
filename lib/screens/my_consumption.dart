@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ecodot/components/application_dataholder.dart';
 import 'package:ecodot/components/layout.dart';
+import 'package:ecodot/model/application_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecodot/components/double_value_text_with_circle.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -100,7 +102,10 @@ class _MyConsumption extends State<MyConsumption> {
 
   @override
   Widget build(BuildContext context) {
-    Future<MyConsumptionModel> mcm = getConsumptionsFromApi();
+    final applicationDataHolder = ApplicationDataHolder.of(context);
+    String token = applicationDataHolder.applicationStorage.token;
+
+    Future<MyConsumptionModel> mcm = getConsumptionsFromApi(token);
     return MyLayout(
         child: Column(children: [
       Container(
@@ -142,7 +147,7 @@ class _MyConsumption extends State<MyConsumption> {
                       padding: EdgeInsets.only(top: 25, bottom: 25),
                       child: titleComponent(itemIndex)),
                     FutureBuilder<MyConsumptionModel>(
-                      future: getConsumptionsFromApi(),
+                      future: getConsumptionsFromApi(token),
                       builder: (BuildContext context,
                           AsyncSnapshot<MyConsumptionModel> mcm) {
                               return doubleValueWithGoodUnit(itemIndex, mcm.data);
@@ -190,8 +195,8 @@ class _MyConsumption extends State<MyConsumption> {
       )
     ]));
   }
-  String get token => "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4QGdtYWlsLmNvZWVlbSIsImV4cCI6MTY3Mzk5NTgzNCwiaWF0IjoxNjczOTc3ODM0fQ.dmJjxYT3O47Qv8Xa1SmZH3OlexOhcOh8w6hkIsllnd_RDq64Wu3WzWst-nn1xU_iYh0ffG9py9zgCMhI7GiwhA";
-  Future<MyConsumptionModel> getConsumptionsFromApi() async {
+  
+  Future<MyConsumptionModel> getConsumptionsFromApi(String token) async {
     http.Response response = await http
       .get(Uri.parse("http://localhost:8080/myconsumption/all"), headers: {
         'Authorization': token,
