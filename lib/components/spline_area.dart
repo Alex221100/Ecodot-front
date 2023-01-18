@@ -8,12 +8,9 @@ import 'package:flutter/material.dart';
 
 /// Chart import
 import 'package:syncfusion_flutter_charts/charts.dart';
-<<<<<<< HEAD
-=======
 import 'package:http/http.dart' as http;
 import '../components/spline_area.dart';
 import '../utils/constants.dart';
->>>>>>> 26c819da80960be6cfbb0b07b7e4fee9e4d729a2
 
 class SplineArea extends StatefulWidget {
   final franceConsumption;
