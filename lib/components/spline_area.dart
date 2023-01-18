@@ -29,13 +29,13 @@ class _SplineAreaState extends State<SplineArea> {
   SfCartesianChart _buildSplineAreaChart() {
     return SfCartesianChart(
       legend: Legend(isVisible: false, opacity: 0.7),
-      title: ChartTitle(text: 'Consommation de la France'),
+      title: ChartTitle(text: "Consommation de la France aujourd'hui"),
       plotAreaBorderWidth: 0,
       primaryXAxis: DateTimeAxis(),
       primaryYAxis: NumericAxis(
           isVisible: false,
           maximumLabels: 1,
-          minimum: 44000,
+          minimum: 38000,
           labelFormat: '{value}kW',
           axisLine: const AxisLine(width: 0),
           majorTickLines: const MajorTickLines(size: 0)),
@@ -53,11 +53,11 @@ class _SplineAreaState extends State<SplineArea> {
         setState(() {
           chartData.add(ChartData(
               DateTime(
-                  int.parse(item.startDate.substring(0, 3)),
-                  int.parse(item.startDate.substring(5, 6)),
-                  int.parse(item.startDate.substring(8, 9)),
-                  int.parse(item.startDate.substring(11, 12)),
-                  int.parse(item.startDate.substring(14, 15))),
+                  int.parse(item.startDate.substring(0, 4)),
+                  int.parse(item.startDate.substring(5, 7)),
+                  int.parse(item.startDate.substring(8, 10)),
+                  int.parse(item.startDate.substring(11, 13)),
+                  int.parse(item.startDate.substring(14, 16))),
               item.value));
         });
       }
@@ -108,8 +108,6 @@ Future<List<FranceConsumptionValue>> getFranceConsumption() async {
       Uri.parse("http://localhost:8080/consommation/france"),
       headers: headers);
   List<FranceConsumptionValue> result = [];
-
-  var json = jsonDecode(response.body)["short_term"][0]["values"];
 
   jsonDecode(response.body)["short_term"][0]["values"]
       .forEach((franceConsumption) {
