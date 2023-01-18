@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:another_flushbar/flushbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/constants.dart';
+
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -167,7 +169,10 @@ class _Login extends State<Login> {
     String body = jsonEncode({'email': email, 'password': password});
 
     http.Response response = await http.post(
-        Uri.parse("http://localhost:8080/authentication/login"),
+        Uri.parse(AppConstants().rootURI +
+            ":" +
+            AppConstants().rootPort +
+            "/authentication/login"),
         headers: headers,
         body: body);
 

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:http/http.dart' as http;
 import '../components/spline_area.dart';
+import '../utils/constants.dart';
 
 class SplineArea extends StatefulWidget {
   const SplineArea({Key? key}) : super(key: key);
@@ -105,7 +106,10 @@ Map<String, String> get headers => {
 
 Future<List<FranceConsumptionValue>> getFranceConsumption() async {
   http.Response response = await http.get(
-      Uri.parse("http://localhost:8080/consommation/france"),
+      Uri.parse(AppConstants().rootURI +
+          ":" +
+          AppConstants().rootPort +
+          "/consommation/france"),
       headers: headers);
   List<FranceConsumptionValue> result = [];
 

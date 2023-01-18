@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/good_practise.dart';
+import '../utils/constants.dart';
 
 class Guide extends StatefulWidget {
   const Guide({super.key});
@@ -83,8 +84,10 @@ class _Guide extends State<Guide> {
       };
 
   Future<List<GoodPractise>> getAllGoodPractises() async {
-    http.Response response = await http
-        .get(Uri.parse("http://localhost:8080/guide"), headers: headers);
+    http.Response response = await http.get(
+        Uri.parse(
+            AppConstants().rootURI + ":" + AppConstants().rootPort + "/guide"),
+        headers: headers);
 
     List<GoodPractise> goodPractises = [];
 

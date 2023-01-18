@@ -6,7 +6,7 @@ class MyColor {
   static Color activeColor = const Color(0xff27AF56);
 }
 
-class AppConstants{
+class AppConstants {
   final rootURI = "http://localhost";
   final rootPort = "8080";
 }
