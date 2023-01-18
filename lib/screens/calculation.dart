@@ -93,9 +93,9 @@ class _Calculation extends State<Calculation> {
                   costController.text = savedCost.toString();
                   powerController.text = snapshotConsoResponse.power.toString();
                   isLoaded = true;
-                } else if (hasReceivedResponse && snapshot.data!.length > 2){
+                } else if (hasReceivedResponse && snapshot.data!.length > 3){
                   calculConsoResponse = snapshot.data![3];
-                  futuresList.remove(futureCalculConsoResponse); //TODO Tester calculette
+                  futuresList.remove(futureCalculConsoResponse);
                 }
 
                 return Container(
