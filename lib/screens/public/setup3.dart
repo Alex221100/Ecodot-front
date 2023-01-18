@@ -58,7 +58,7 @@ class _Setup3 extends State<Setup3> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Image(
-                          image: AssetImage('assets/Setup3.png'),
+                          image: AssetImage('assets/setup3.png'),
                           height: MediaQuery.of(context).size.height * 0.35,
                         ),
                       ),
