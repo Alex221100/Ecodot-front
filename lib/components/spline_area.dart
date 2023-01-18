@@ -8,6 +8,12 @@ import 'package:flutter/material.dart';
 
 /// Chart import
 import 'package:syncfusion_flutter_charts/charts.dart';
+<<<<<<< HEAD
+=======
+import 'package:http/http.dart' as http;
+import '../components/spline_area.dart';
+import '../utils/constants.dart';
+>>>>>>> 26c819da80960be6cfbb0b07b7e4fee9e4d729a2
 
 class SplineArea extends StatefulWidget {
   final franceConsumption;
@@ -98,4 +104,26 @@ class ChartData {
   ChartData(this.y1, this.y2);
   final DateTime y1;
   final double y2;
+}
+
+Map<String, String> get headers => {
+      'Content-Type': 'application/json; charset=UTF-8',
+      "Accept": "application/json"
+    };
+
+Future<List<FranceConsumptionValue>> getFranceConsumption() async {
+  http.Response response = await http.get(
+      Uri.parse(AppConstants().rootURI +
+          ":" +
+          AppConstants().rootPort +
+          "/consommation/france"),
+      headers: headers);
+  List<FranceConsumptionValue> result = [];
+
+  jsonDecode(response.body)["short_term"][0]["values"]
+      .forEach((franceConsumption) {
+    result.add(FranceConsumptionValue.fromJson(franceConsumption));
+  });
+
+  return result;
 }

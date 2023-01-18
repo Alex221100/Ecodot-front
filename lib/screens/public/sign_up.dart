@@ -4,6 +4,7 @@ import 'package:ecodot/components/sign_in/form_enedis.dart';
 import 'package:ecodot/components/sign_in/form_house.dart';
 import 'package:ecodot/components/sign_in/form_information.dart';
 import 'package:ecodot/components/sign_in/sign_in_dataholder.dart';
+import 'package:ecodot/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:another_flushbar/flushbar.dart';
@@ -176,15 +177,15 @@ class _SignUp extends State<SignUp> {
     });
 
     http.Response response = await http.post(
-        Uri.parse("http://localhost:8080/authentication/signup"),
+        Uri.parse(AppConstants().rootURI +
+            ":" +
+            AppConstants().rootPort +
+            "/authentication/signup"),
         headers: headers,
         body: body);
 
     if (response.statusCode == 200) {
-      Navigator.push(context,
-          MaterialPageRoute<void>(builder: (BuildContext context) {
-        return MyApp();
-      }));
+      Navigator.pushNamed(context, "/login");
       Flushbar(
         duration: Duration(seconds: 3),
         flushbarPosition: FlushbarPosition.TOP,
