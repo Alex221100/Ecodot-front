@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:ecodot/components/application_dataholder.dart';
 import 'package:ecodot/components/layout.dart';
 import 'package:ecodot/model/application_storage.dart';
@@ -215,7 +216,14 @@ class _MyConsumption extends State<MyConsumption> {
       MyConsumptionModel mcm =
           MyConsumptionModel.fromJson(jsonDecode(response.body));
       return mcm;
-    } else if (response.statusCode == 204) {
+    } else if (response.statusCode == 204 || response.statusCode == 400) {
+      Flushbar(
+          duration: Duration(seconds: 3),
+          flushbarPosition: FlushbarPosition.TOP,
+          message:
+              "Veuillez vérifier vos données Enedis.",
+          backgroundColor: Colors.red,
+        )..show(context);
         Navigator.push(context, new MaterialPageRoute(
           builder: (context) =>
           new FormEnedisSettings())
