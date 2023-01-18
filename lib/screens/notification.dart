@@ -1,8 +1,7 @@
 //create notification class
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-//solve me Unhandled Exception: Invalid argument(s): iOS settings must be set when targeting iOS platform error
-import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
 
 class Notification extends StatefulWidget {
   const Notification({Key? key}) : super(key: key);
@@ -16,10 +15,15 @@ class _Notification extends State<Notification> {
   void initState() {
     super.initState();
   }
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Mes notifications"),
+          backgroundColor: Colors.white,
+        ),
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
@@ -30,50 +34,61 @@ class _Notification extends State<Notification> {
       ),
     );
   }
-}
 
-Future<void> showNotification() async {
-  
-//initialize notification plugin
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =  
-    FlutterLocalNotificationsPlugin();
-//create notification channel
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'high_importance_channel', // id
-  'High Importance Notifications', // title
-  importance: Importance.high,
-);
-//initialize notification channel
-await flutterLocalNotificationsPlugin
-    .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-    ?.createNotificationChannel(channel);
+  Future<void> showNotification() async {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  //create notification channel
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    importance: Importance.high,
+  );
+  //initialize notification channel
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
 //initialize notification settings
-const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('app_icon');
-final InitializationSettings initializationSettings =
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('ecodot_with_name');
 
-    InitializationSettings(android: initializationSettingsAndroid);
-await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  DarwinInitializationSettings initializationSettingsDarwin =
+      const DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+  );
+
+  InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 //create notification details
-const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
-  'your channel id', // id
-  'your channel name', // title
-  importance: Importance.max,
-  priority: Priority.high,
-  showWhen: false,
-);
-const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'your channel id', // id
+    'your channel name', // title
+    importance: Importance.max,
+    priority: Priority.high,
+    showWhen: false,
+  );
+  //create notification details ios with darwin
+  const DarwinNotificationDetails darwinPlatformChannelSpecifics =
+      DarwinNotificationDetails(
+    presentAlert: true,
+    presentBadge: true,
+    presentSound: true,
+  );
+  const NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics, iOS: darwinPlatformChannelSpecifics);
 //show notification
-await flutterLocalNotificationsPlugin.show(
-  0,
-  'plain title',
-  'plain body',
-  platformChannelSpecifics,
-  payload: 'item x',
-);
-
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    'plain title',
+    'plain body',
+    platformChannelSpecifics,
+    payload: 'item x',
+  );
+  }
 }
