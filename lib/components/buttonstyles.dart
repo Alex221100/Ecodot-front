@@ -7,9 +7,9 @@ class ButtonDecoration1 extends BoxDecoration {
   ButtonDecoration1();
 
   final LinearGradient gradient = LinearGradient(
-      colors: [Colors.green, Colors.lightGreenAccent],
       begin: Alignment.topCenter,
-      end: Alignment.bottomCenter);
+      end: Alignment.bottomCenter,
+      colors: [Color(0xff27AF56), Color(0xffC4FF00)]);
   final BorderRadiusGeometry borderRadius =
       BorderRadius.all(Radius.circular(5));
 }
