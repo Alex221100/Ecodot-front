@@ -177,19 +177,17 @@ class _SignUp extends State<SignUp> {
     });
 
     http.Response response = await http.post(
-    Uri.parse(AppConstants().rootURI +
+    Uri.parse(AppConstants.rootURI +
     ":" +
-    AppConstants().rootPort +
+    AppConstants.rootPort +
     "/authentication/signup"),
     headers: headers,
     body: body);
 
-    // if (response.statusCode == 200) {
       Navigator.push(context,
       MaterialPageRoute<void>(builder: (BuildContext context) {
         return FormEnedisSettings();
       }));
-    // }
   }
   goHome() async {
     //sign in the user
