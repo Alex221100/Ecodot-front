@@ -1,11 +1,8 @@
 import 'dart:convert';
 import 'package:ecodot/components/application_dataholder.dart';
-import 'package:ecodot/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import '../../components/layout.dart';
-import '../../main.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -104,6 +101,20 @@ class _Login extends State<Login> {
                       applicationDataHolder.applicationStorage
                           .setToken(req.body);
                       Navigator.pushNamed(context, "/");
+                      Flushbar(
+                        duration: Duration(seconds: 3),
+                        flushbarPosition: FlushbarPosition.TOP,
+                        message: "Bienvenue sur Ecodot !",
+                        backgroundColor: Colors.green,
+                      )..show(context);
+                    } else {
+                      Flushbar(
+                        duration: Duration(seconds: 3),
+                        flushbarPosition: FlushbarPosition.TOP,
+                        message:
+                            "Votre email ou votre mot de passe est incorect.",
+                        backgroundColor: Colors.red,
+                      )..show(context);
                     }
                   },
                   child: const Text(

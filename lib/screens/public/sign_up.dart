@@ -6,6 +6,7 @@ import 'package:ecodot/components/sign_in/form_information.dart';
 import 'package:ecodot/components/sign_in/sign_in_dataholder.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:another_flushbar/flushbar.dart';
 
 import '../../main.dart';
 
@@ -184,19 +185,19 @@ class _SignUp extends State<SignUp> {
           MaterialPageRoute<void>(builder: (BuildContext context) {
         return MyApp();
       }));
-      const snackBar = SnackBar(
+      Flushbar(
+        duration: Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.TOP,
+        message: "Bienvenue sur Ecodot !",
         backgroundColor: Colors.green,
-        content: Text("Bienvenue sur Ecodot"),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      )..show(context);
     } else {
-      const snackBar = SnackBar(
+      Flushbar(
+        duration: Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.TOP,
+        message: "Une erreur s'est produite. Réessayez plus tard.",
         backgroundColor: Colors.red,
-        content: Text("Une erreur s'est produite. Réessayez plus tard"),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      )..show(context);
     }
   }
 
