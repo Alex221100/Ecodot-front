@@ -50,7 +50,8 @@ class _Home extends State<Home> {
                         Center(
                           child: Row(
                             children: [
-                              Image(image: AssetImage('electricity.png')),
+                              Image(
+                                  image: AssetImage('assets/electricity.png')),
                               Padding(
                                 padding: EdgeInsets.only(top: 10, bottom: 10),
                                 child: Padding(

@@ -29,12 +29,9 @@ class _Login extends State<Login> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Center(
-                child: Image(
-                  image: AssetImage('../assets/ecodot-with-name.png'),
-                  height: 160,
-                ),
-              ),
+              Center(
+                  child:
+                      Image.asset('assets/ecodot-with-name.png', height: 160)),
               const Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Align(
@@ -104,11 +101,12 @@ class _Login extends State<Login> {
                           .setToken(req.body);
 
                       //Stockages sharedpreferences
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       prefs.setString("currentusermail", email);
                       Challenges challenges = await fetchChallenges(3, []);
                       List<String> challengetitles = [];
-                      for(Challenge challenge in challenges.challengeList){
+                      for (Challenge challenge in challenges.challengeList) {
                         challengetitles.add(challenge.title);
                       }
                       prefs.setStringList("challengetitles", challengetitles);

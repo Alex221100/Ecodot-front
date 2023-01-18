@@ -21,7 +21,7 @@ class _Setup1 extends State<Setup1> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Image(
-                image: AssetImage('../assets/ecodot-with-name.png'),
+                image: AssetImage('assets/ecodot-with-name.png'),
                 height: 140,
               ),
               SizedBox(
@@ -58,7 +58,7 @@ class _Setup1 extends State<Setup1> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Image(
-                          image: AssetImage('../assets/setup1.png'),
+                          image: AssetImage('assets/setup1.png'),
                           height: MediaQuery.of(context).size.height * 0.35,
                         ),
                       ),
