@@ -50,7 +50,7 @@ class _TopMenu extends State<TopMenu> {
               shape: BoxShape.circle,
               image: DecorationImage(
                 fit: BoxFit.contain,
-                image: AssetImage('avatar-default.png'),
+                image: AssetImage('assets/avatar-default.png'),
               ),
             ),
           ),

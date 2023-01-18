@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         title: "Ecodot",
         debugShowCheckedModeBanner: false,
         home: const BottomNavbar(),
-        initialRoute: "/login",
+        initialRoute: "/setup1",
         routes: {
           "/home": (final context) => const Home(),
           "/my_consumption": (final context) => const MyConsumption(),

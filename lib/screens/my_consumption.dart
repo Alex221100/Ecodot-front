@@ -11,8 +11,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/my_consumption_model.dart';
-
-
+import '../utils/constants.dart';
 
 class MyConsumption extends StatefulWidget {
   const MyConsumption({super.key});
@@ -49,7 +48,7 @@ class _MyConsumption extends State<MyConsumption> {
     double weekcons = week ?? 0;
     double monthcons = month ?? 0;
     double yearcons = year ?? 0;
-    
+
     switch (index) {
       case 0:
         return DoubleValueTextWithCircle(
@@ -146,13 +145,12 @@ class _MyConsumption extends State<MyConsumption> {
                       alignment: Alignment.topCenter,
                       padding: EdgeInsets.only(top: 25, bottom: 25),
                       child: titleComponent(itemIndex)),
-                    FutureBuilder<MyConsumptionModel>(
+                  FutureBuilder<MyConsumptionModel>(
                       future: getConsumptionsFromApi(token),
                       builder: (BuildContext context,
                           AsyncSnapshot<MyConsumptionModel> mcm) {
-                              return doubleValueWithGoodUnit(itemIndex, mcm.data);
-                          }
-                    )
+                        return doubleValueWithGoodUnit(itemIndex, mcm.data);
+                      })
                   //doubleValueWithGoodUnit(itemIndex, mcm),
                 ],
               ),
@@ -182,7 +180,7 @@ class _MyConsumption extends State<MyConsumption> {
               Container(
                 padding: EdgeInsets.all(10),
                 child: const LimitedBox(
-                    maxWidth: 280,
+                    maxWidth: 250,
                     maxHeight: 100,
                     child: Text(
                       'Vous souhaitez réduire votre consommation ? \nSuivez notre guide de bonnes pratiques sur les ressources énergétiques à la maison.',
@@ -195,18 +193,22 @@ class _MyConsumption extends State<MyConsumption> {
       )
     ]));
   }
-  
+
   Future<MyConsumptionModel> getConsumptionsFromApi(String token) async {
-    http.Response response = await http
-      .get(Uri.parse("http://localhost:8080/myconsumption/all"), headers: {
-        'Authorization': token,
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': "application/json",
-      }
-    );
+    http.Response response = await http.get(
+        Uri.parse(AppConstants().rootURI +
+            ":" +
+            AppConstants().rootPort +
+            "/myconsumption/all"),
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': "application/json",
+        });
     if (response.statusCode == 200) {
-      MyConsumptionModel mcm = MyConsumptionModel.fromJson(jsonDecode(response.body));
-    return mcm; 
+      MyConsumptionModel mcm =
+          MyConsumptionModel.fromJson(jsonDecode(response.body));
+      return mcm;
     } else {
       throw Exception("Failed to load user's consumptions");
     }
