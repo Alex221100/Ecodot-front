@@ -42,9 +42,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   dot_navigation_bar: ^1.0.1+4
   persistent_bottom_nav_bar: ^5.0.2
+  syncfusion_flutter_charts: ^20.4.43
   http: ^0.13.5
   auto_size_text: ^3.0.0
-
+  circle_progress_bar: ^0.1.2
+  carousel_slider: ^4.2.1
+  another_flushbar: ^1.12.29
+  shared_preferences: ^2.0.16
 
 dev_dependencies:
   flutter_test:
@@ -69,14 +73,14 @@ flutter:
   uses-material-design: true
 
   assets:
-      - assets/avatar-default.png
-      - assets/ecodot.png
-      - assets/ecodot-with-name.png
-      - assets/electricity.png
-      - assets/question.png
-      - assets/setup1.png
-      - assets/setup2.png
-      - assets/setup3.png
+    - assets/avatar-default.png
+    - assets/ecodot.png
+    - assets/ecodot-with-name.png
+    - assets/electricity.png
+    - assets/question.png
+    - assets/setup1.png
+    - assets/setup2.png
+    - assets/setup3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

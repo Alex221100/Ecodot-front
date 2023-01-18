@@ -17,7 +17,7 @@ class _TopMenu extends State<TopMenu> {
         width: 70,
         height: 70,
         child: Center(
-          child: Image(image: AssetImage('ecodot.png')),
+          child: Image(image: AssetImage('assets/ecodot.png')),
         ),
       ),
       actions: [
@@ -50,12 +50,13 @@ class _TopMenu extends State<TopMenu> {
               shape: BoxShape.circle,
               image: DecorationImage(
                 fit: BoxFit.contain,
-                image: AssetImage('avatar-default.png'),
+                image: AssetImage('assets/avatar-default.png'),
               ),
             ),
           ),
         )
       ],
+      elevation: 0,
     );
   }
 }

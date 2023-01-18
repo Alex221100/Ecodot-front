@@ -1,6 +1,7 @@
 import 'package:ecodot/components/bottom_navbar.dart';
 import 'package:ecodot/components/sign_in/sign_in_dataholder.dart';
 import 'package:ecodot/screens/calculation.dart';
+import 'package:ecodot/screens/form_enedis_settings.dart';
 import 'package:ecodot/screens/france_consumption.dart';
 import 'package:ecodot/screens/guide.dart';
 import 'package:ecodot/screens/home.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           "/calculation": (final context) => const Calculation(),
           "/login": (context) => const Login(),
           "/signup": (context) => const SignUp(),
+          "/setupEnedis": (context) => const FormEnedisSettings(),
           "/guide": (context) => const Guide(),
           "/setup1": (final context) => const Setup1(),
           "/setup2": (final context) => const Setup2(),

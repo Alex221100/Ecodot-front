@@ -4,11 +4,10 @@ import 'package:ecodot/components/layout.dart';
 import 'package:ecodot/rest/calculconso.dart';
 import 'package:ecodot/rest/devicetypes.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/inputfields.dart';
 import '../rest/conso.dart';
-
-//TODO Tarif du kWh persisté (cache/sharedpreferences)
 
 class Calculation extends StatefulWidget {
   const Calculation({super.key});
@@ -51,11 +50,17 @@ class _Calculation extends State<Calculation> {
   TextEditingController powerController = TextEditingController();
   TextEditingController durationController = TextEditingController();
 
+  //Tarif kWh sauvegardé
+  double savedCost = 0;
+
   List<String> deviceTypes = [];
   late Future<DeviceTypes> futureDeviceTypes;
   late Future<ConsoResponse> futureConsoResponse;
   late Future<CalculConsoResponse> futureCalculConsoResponse;
+  late Future<SharedPreferences> futurePrefs;
   late List<Future> futuresList;
+
+  late SharedPreferences prefs;
 
   @override
   void initState() {
@@ -64,7 +69,8 @@ class _Calculation extends State<Calculation> {
     futureDeviceTypes = fetchDeviceTypes();
     futureConsoResponse = futureDeviceTypes
         .then((value) => fetchConsoResponse(value.deviceNameArrayList.first));
-    futuresList = [futureDeviceTypes, futureConsoResponse];
+    futurePrefs = SharedPreferences.getInstance();
+    futuresList = [futureDeviceTypes, futureConsoResponse, futurePrefs];
   }
 
   @override
@@ -77,6 +83,9 @@ class _Calculation extends State<Calculation> {
                 deviceTypes = snapshot.data![0].deviceNameArrayList;
                 if (!isLoaded) {
                   ConsoResponse snapshotConsoResponse = snapshot.data![1];
+                  SharedPreferences prefs = snapshot.data![2];
+                  savedCost = prefs.getDouble("savedCost") == null ? 0 : prefs.getDouble("savedCost")!;
+                  costController.text  = savedCost.toString();
                   powerController.text = snapshotConsoResponse.power.toString();
                   futuresList.remove(
                       futureConsoResponse); //Pour optimiser les appels à la bdd, n'appelle plus ConsoReferential à chaque build
@@ -503,6 +512,7 @@ class _Calculation extends State<Calculation> {
                                                               hasReceivedResponse =
                                                                   true
                                                       ).whenComplete(() => mainContainerHeight = 850);
+                                                  prefs.setDouble("savedCost", costController.text as double);
                                                 }
                                               });
                                             },

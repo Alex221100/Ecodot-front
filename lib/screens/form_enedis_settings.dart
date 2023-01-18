@@ -1,25 +1,28 @@
 import 'dart:convert';
 import 'package:ecodot/components/application_dataholder.dart';
-import 'package:ecodot/rest/challenge.dart';
+import 'package:ecodot/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:another_flushbar/flushbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+import '../components/layout.dart';
+import '../main.dart';
+
+class FormEnedisSettings extends StatefulWidget {
+  const FormEnedisSettings({super.key});
 
   @override
-  State<Login> createState() => _Login();
+  State<FormEnedisSettings> createState() => _FormEnedisSettings();
 }
 
-class _Login extends State<Login> {
-  String email = "";
-  String password = "";
+class _FormEnedisSettings extends State<FormEnedisSettings> {
+  String enedisToken = "";
+  String enedisPDL = "";
 
   @override
   Widget build(BuildContext context) {
     final applicationDataHolder = ApplicationDataHolder.of(context);
+    String token = applicationDataHolder.applicationStorage.token;
+
     return Scaffold(
       backgroundColor: const Color(0xffF4F5FA),
       body: Container(
@@ -29,9 +32,12 @@ class _Login extends State<Login> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
-                  child:
-                      Image.asset('assets/ecodot-with-name.png', height: 160)),
+              const Center(
+                child: Image(
+                  image: AssetImage('assets/ecodot-with-name.png'),
+                  height: 160,
+                ),
+              ),
               const Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Align(
@@ -56,7 +62,7 @@ class _Login extends State<Login> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: TextFormField(
-                  onChanged: (value) => setState(() => email = value),
+                  onChanged: (value) => setState(() => enedisToken = value),
                   decoration: const InputDecoration(
                     fillColor: Colors.white,
                     border: OutlineInputBorder(),
@@ -64,19 +70,19 @@ class _Login extends State<Login> {
                       borderSide:
                           BorderSide(width: 3, color: Color(0xff27AF56)),
                     ),
-                    labelText: 'Mail',
+                    labelText: 'Token Enedis',
                   ),
                 ),
               ),
               TextFormField(
-                onChanged: (value) => setState(() => password = value),
+                onChanged: (value) => setState(() => enedisPDL = value),
                 obscureText: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(width: 3, color: Color(0xff27AF56)),
                   ),
-                  labelText: 'Mot de passe',
+                  labelText: 'Point de livraison Enedis',
                 ),
               ),
               Container(
@@ -95,37 +101,12 @@ class _Login extends State<Login> {
                     shadowColor: Colors.transparent,
                   ),
                   onPressed: () async {
-                    http.Response req = await login(email, password);
+                    http.Response req =
+                        await saveTokenPDL(token, enedisToken, enedisPDL);
                     if (req.statusCode == 200) {
                       applicationDataHolder.applicationStorage
                           .setToken(req.body);
-
-                      //Stockages sharedpreferences
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setString("currentusermail", email);
-                      Challenges challenges = await fetchChallenges(3, []);
-                      List<String> challengetitles = [];
-                      for (Challenge challenge in challenges.challengeList) {
-                        challengetitles.add(challenge.title);
-                      }
-                      prefs.setStringList("challengetitles", challengetitles);
-
                       Navigator.pushNamed(context, "/");
-                      Flushbar(
-                        duration: Duration(seconds: 3),
-                        flushbarPosition: FlushbarPosition.TOP,
-                        message: "Bienvenue sur Ecodot !",
-                        backgroundColor: Colors.green,
-                      )..show(context);
-                    } else {
-                      Flushbar(
-                        duration: Duration(seconds: 3),
-                        flushbarPosition: FlushbarPosition.TOP,
-                        message:
-                            "Votre email ou votre mot de passe est incorect.",
-                        backgroundColor: Colors.red,
-                      )..show(context);
                     }
                   },
                   child: const Text(
@@ -163,14 +144,24 @@ class _Login extends State<Login> {
         "Accept": "application/json"
       };
 
-  Future<http.Response> login(String email, String password) async {
-    String body = jsonEncode({'email': email, 'password': password});
-
-    http.Response response = await http.post(
-        Uri.parse("http://localhost:8080/authentication/login"),
-        headers: headers,
+  Future<http.Response> saveTokenPDL(
+      String token, String enedisToken, String enedisPDL) async {
+    String body = jsonEncode({
+      'userToken': token,
+      'enedisToken': enedisToken,
+      'enedisPDL': enedisPDL
+    });
+    http.Response responseSetup = await http.post(
+        Uri.parse("http://localhost:8080/myconsumption/setupEnedis"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': "application/json",
+        },
         body: body);
-
-    return response;
+    if (responseSetup.statusCode == 200) {
+      return responseSetup;
+    } else {
+      throw Exception("Failed to setup user's token");
+    }
   }
 }
