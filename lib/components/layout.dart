@@ -15,10 +15,10 @@ class _MyLayout extends State<MyLayout> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
+          preferredSize: Size.fromHeight(60),
           child: TopMenu(),
         ),
-        backgroundColor: Color(0xffF4F5FA),
-        body: widget.child);
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(child: widget.child));
   }
 }

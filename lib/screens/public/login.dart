@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:ecodot/components/application_dataholder.dart';
+import 'package:ecodot/rest/challenge.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:another_flushbar/flushbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -100,6 +102,17 @@ class _Login extends State<Login> {
                     if (req.statusCode == 200) {
                       applicationDataHolder.applicationStorage
                           .setToken(req.body);
+
+                      //Stockages sharedpreferences
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setString("currentusermail", email);
+                      Challenges challenges = await fetchChallenges(3, []);
+                      List<String> challengetitles = [];
+                      for(Challenge challenge in challenges.challengeList){
+                        challengetitles.add(challenge.title);
+                      }
+                      prefs.setStringList("challengetitles", challengetitles);
+
                       Navigator.pushNamed(context, "/");
                       Flushbar(
                         duration: Duration(seconds: 3),
