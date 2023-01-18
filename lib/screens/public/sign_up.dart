@@ -185,10 +185,7 @@ class _SignUp extends State<SignUp> {
         body: body);
 
     if (response.statusCode == 200) {
-      Navigator.push(context,
-          MaterialPageRoute<void>(builder: (BuildContext context) {
-        return MyApp();
-      }));
+      Navigator.pushNamed(context, "/");
       Flushbar(
         duration: Duration(seconds: 3),
         flushbarPosition: FlushbarPosition.TOP,
