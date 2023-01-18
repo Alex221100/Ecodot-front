@@ -125,7 +125,7 @@ class _Home extends State<Home> {
                           Padding(
                               padding: EdgeInsets.only(top: 10),
                               child: Image(
-                                image: AssetImage('question.png'),
+                                image: AssetImage('assets/question.png'),
                                 height: 60,
                                 width: 60,
                               )),
