@@ -169,9 +169,9 @@ class _Login extends State<Login> {
     String body = jsonEncode({'email': email, 'password': password});
 
     http.Response response = await http.post(
-        Uri.parse(AppConstants().rootURI +
+        Uri.parse(AppConstants.rootURI +
             ":" +
-            AppConstants().rootPort +
+            AppConstants.rootPort +
             "/authentication/login"),
         headers: headers,
         body: body);

@@ -153,9 +153,9 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
       'enedisPDL': enedisPDL
     });
     http.Response responseSetup = await http.post(
-        Uri.parse(AppConstants().rootURI +
+        Uri.parse(AppConstants.rootURI +
             ":" +
-            AppConstants().rootPort +
+            AppConstants.rootPort +
             "/myconsumption/setupEnedis"),
         headers: {
           'Content-Type': 'application/json',

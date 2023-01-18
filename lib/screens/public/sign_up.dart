@@ -177,9 +177,9 @@ class _SignUp extends State<SignUp> {
     });
 
     http.Response response = await http.post(
-        Uri.parse(AppConstants().rootURI +
+        Uri.parse(AppConstants.rootURI +
             ":" +
-            AppConstants().rootPort +
+            AppConstants.rootPort +
             "/authentication/signup"),
         headers: headers,
         body: body);

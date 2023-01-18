@@ -196,9 +196,9 @@ class _MyConsumption extends State<MyConsumption> {
 
   Future<MyConsumptionModel> getConsumptionsFromApi(String token) async {
     http.Response response = await http.get(
-        Uri.parse(AppConstants().rootURI +
+        Uri.parse(AppConstants.rootURI +
             ":" +
-            AppConstants().rootPort +
+            AppConstants.rootPort +
             "/myconsumption/all"),
         headers: {
           'Authorization': token,

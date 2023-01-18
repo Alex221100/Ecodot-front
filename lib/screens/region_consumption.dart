@@ -7,9 +7,33 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../components/spline_area.dart';
 import '../model/france_consumption.dart';
+import '../utils/constants.dart';
 
 class RegionConsumption extends StatefulWidget {
   const RegionConsumption({super.key});
+
+  static Map<String, String> get headers => {
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Accept": "application/json"
+      };
+
+  static Future<Map<String, double>> getRegionConsumption() async {
+    http.Response response = await http.get(
+        Uri.parse(AppConstants.rootURI +
+            ":" +
+            AppConstants.rootPort +
+            "/consommation/region"),
+        headers: headers);
+
+    Map<String, double> result = {};
+
+    jsonDecode(utf8.decode(response.bodyBytes))["records"].forEach((record) {
+      dynamic fields = record["record"]["fields"];
+      result[fields["region"]] = fields["SUM(total_energie_soutiree_wh)"];
+    });
+
+    return result;
+  }
 
   @override
   State<RegionConsumption> createState() => _RegionConsumption();
@@ -24,27 +48,8 @@ class _RegionConsumption extends State<RegionConsumption> {
       child: Padding(
           padding: const EdgeInsets.only(bottom: 60),
           // display consumption as text
-          child: BarChart(regionConsumption: getRegionConsumption())),
+          child: BarChart(
+              regionConsumption: RegionConsumption.getRegionConsumption())),
     )));
-  }
-
-  static Map<String, String> get headers => {
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Accept": "application/json"
-      };
-
-  static Future<Map<String, double>> getRegionConsumption() async {
-    http.Response response = await http.get(
-        Uri.parse("http://localhost:8080/consommation/region"),
-        headers: headers);
-
-    Map<String, double> result = {};
-
-    jsonDecode(utf8.decode(response.bodyBytes))["records"].forEach((record) {
-      dynamic fields = record["record"]["fields"];
-      result[fields["region"]] = fields["SUM(total_energie_soutiree_wh)"];
-    });
-
-    return result;
   }
 }

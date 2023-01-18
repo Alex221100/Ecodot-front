@@ -86,7 +86,7 @@ class _Guide extends State<Guide> {
   Future<List<GoodPractise>> getAllGoodPractises() async {
     http.Response response = await http.get(
         Uri.parse(
-            AppConstants().rootURI + ":" + AppConstants().rootPort + "/guide"),
+            AppConstants.rootURI + ":" + AppConstants.rootPort + "/guide"),
         headers: headers);
 
     List<GoodPractise> goodPractises = [];

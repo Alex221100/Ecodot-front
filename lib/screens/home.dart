@@ -1,5 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ecodot/components/bar_chart.dart';
+import 'package:ecodot/screens/france_consumption.dart';
 import 'package:ecodot/screens/guide.dart';
+import 'package:ecodot/screens/region_consumption.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -223,7 +226,8 @@ class _Home extends State<Home> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
                             height: 400,
-                            child: Card(
+                            child: SingleChildScrollView(
+                                child: Card(
                               margin: const EdgeInsets.all(10),
                               color: Colors.white,
                               shadowColor: Colors.blueGrey,
@@ -232,52 +236,17 @@ class _Home extends State<Home> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  SplineArea(),
+                                  SplineArea(
+                                      franceConsumption: FranceConsumption
+                                          .getFranceConsumption()),
+                                  BarChart(
+                                      regionConsumption: RegionConsumption
+                                          .getRegionConsumption()),
                                 ],
                               ),
-                            ),
+                            )),
                           ),
                         ],
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(bottom: 150, top: 10),
-                        child: SizedBox(
-                            //Partie challenges
-                            width: MediaQuery.of(context).size.width,
-                            height: 225,
-                            child: Card(
-                              margin:
-                                  const EdgeInsets.only(right: 10, left: 10),
-                              color: Colors.white,
-                              shadowColor: Colors.blueGrey,
-                              elevation: 10,
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  height: 200,
-                                  child: Container(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: Column(children: [
-                                        Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                            "Challenges",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
-                                          ),
-                                        ),
-                                        Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: challengeCards)
-                                      ])),
-                                ),
-                              ),
-                            )),
                       )
                     ],
                   ),

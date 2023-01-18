@@ -107,20 +107,3 @@ Map<String, String> get headers => {
       'Content-Type': 'application/json; charset=UTF-8',
       "Accept": "application/json"
     };
-
-Future<List<FranceConsumptionValue>> getFranceConsumption() async {
-  http.Response response = await http.get(
-      Uri.parse(AppConstants().rootURI +
-          ":" +
-          AppConstants().rootPort +
-          "/consommation/france"),
-      headers: headers);
-  List<FranceConsumptionValue> result = [];
-
-  jsonDecode(response.body)["short_term"][0]["values"]
-      .forEach((franceConsumption) {
-    result.add(FranceConsumptionValue.fromJson(franceConsumption));
-  });
-
-  return result;
-}

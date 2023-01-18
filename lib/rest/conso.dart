@@ -25,13 +25,12 @@ Future<ConsoResponse> fetchConsoResponse(String deviceName) async {
   };
 
   Response apiResponse = await http.post(
-    Uri.parse(AppConstants().rootURI +
-        ":" +
-        AppConstants().rootPort +
-        "/consoreferential"),
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode(body)
-  );
+      Uri.parse(AppConstants.rootURI +
+          ":" +
+          AppConstants.rootPort +
+          "/consoreferential"),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: json.encode(body));
 
   if (apiResponse.statusCode == 200) {
     ConsoResponse consoResponse =

@@ -30,7 +30,6 @@ class ScoreDTO {
     int score = json["score"];
     int position = json["position"];
 
-
     return ScoreDTO(
         usermail: usermail,
         firstname: firstname,
@@ -68,21 +67,20 @@ class TopScoreDTO {
     List<dynamic> JSONScoreList = json['scores'];
     List<TopScoreScoreDTO> scoreList = [];
     for (var element in JSONScoreList) {
-      TopScoreScoreDTO topScoreScoreDTO = TopScoreScoreDTO(
-          element['usermail'], element['score']);
+      TopScoreScoreDTO topScoreScoreDTO =
+          TopScoreScoreDTO(element['usermail'], element['score']);
       scoreList.add(topScoreScoreDTO);
     }
     List<dynamic> JSONUserlist = json['users'];
     List<TopScoreUserDTO> userList = [];
     for (var element in JSONUserlist) {
-      String email = element['email'] == null ? "":element['email'];
-      String firstname = element['firstname'] == null ? "":element['firstname'];
-      String lastname = element['lastname'] == null ? "":element['lastname'];
+      String email = element['email'] == null ? "" : element['email'];
+      String firstname =
+          element['firstname'] == null ? "" : element['firstname'];
+      String lastname = element['lastname'] == null ? "" : element['lastname'];
 
-
-
-      TopScoreUserDTO userScoreDTO = TopScoreUserDTO(
-          email, "", firstname, lastname);
+      TopScoreUserDTO userScoreDTO =
+          TopScoreUserDTO(email, "", firstname, lastname);
       userList.add(userScoreDTO);
     }
     return TopScoreDTO(scores: scoreList, users: userList);
@@ -94,10 +92,8 @@ Future<TopScoreDTO> fetchTopScore(int n) async {
   final body = {"topNumber": n};
 
   Response apiResponse = await http.post(
-      Uri.parse(AppConstants().rootURI +
-          ":" +
-          AppConstants().rootPort +
-          "/score/top"),
+      Uri.parse(
+          AppConstants.rootURI + ":" + AppConstants.rootPort + "/score/top"),
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: json.encode(body));
 
@@ -114,8 +110,7 @@ Future<ScoreDTO> fetchScore(String usermail) async {
   final body = {"usermail": usermail};
 
   Response apiResponse = await http.post(
-      Uri.parse(
-          AppConstants().rootURI + ":" + AppConstants().rootPort + "/score"),
+      Uri.parse(AppConstants.rootURI + ":" + AppConstants.rootPort + "/score"),
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: json.encode(body));
 
@@ -124,7 +119,8 @@ Future<ScoreDTO> fetchScore(String usermail) async {
         ScoreDTO.fromJson(jsonDecode(utf8.decode(apiResponse.bodyBytes)));
     return scoreDTO;
   } else {
-    return ScoreDTO(usermail: "", firstname: "", lastname: "", score: 0, position: 0);
+    return ScoreDTO(
+        usermail: "", firstname: "", lastname: "", score: 0, position: 0);
   }
 }
 
@@ -136,8 +132,7 @@ Future<ScoreDTO> fetchCurrentUserScore() async {
   final body = {"usermail": usermail};
 
   Response apiResponse = await http.post(
-      Uri.parse(
-          AppConstants().rootURI + ":" + AppConstants().rootPort + "/score"),
+      Uri.parse(AppConstants.rootURI + ":" + AppConstants.rootPort + "/score"),
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: json.encode(body));
 
@@ -146,6 +141,7 @@ Future<ScoreDTO> fetchCurrentUserScore() async {
         ScoreDTO.fromJson(jsonDecode(utf8.decode(apiResponse.bodyBytes)));
     return scoreDTO;
   } else {
-    return ScoreDTO(usermail: "", firstname: "", lastname: "", score: 0, position: 0);
+    return ScoreDTO(
+        usermail: "", firstname: "", lastname: "", score: 0, position: 0);
   }
 }
