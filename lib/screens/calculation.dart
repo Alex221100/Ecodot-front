@@ -70,7 +70,7 @@ class _Calculation extends State<Calculation> {
     futureConsoResponse = futureDeviceTypes
         .then((value) => fetchConsoResponse(value.deviceNameArrayList.first));
     futurePrefs = SharedPreferences.getInstance();
-    futuresList = [futureDeviceTypes, futureConsoResponse, futurePrefs];
+    futuresList = [futureDeviceTypes,futurePrefs,futureConsoResponse];
   }
 
   @override
@@ -81,12 +81,13 @@ class _Calculation extends State<Calculation> {
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 deviceTypes = snapshot.data![0].deviceNameArrayList;
+                prefs = snapshot.data![1];
                 if (!isLoaded) {
-                  ConsoResponse snapshotConsoResponse = snapshot.data![1];
-                  SharedPreferences prefs = snapshot.data![2];
+                  ConsoResponse snapshotConsoResponse = snapshot.data![2];
                   savedCost = prefs.getDouble("savedCost") == null ? 0 : prefs.getDouble("savedCost")!;
                   costController.text  = savedCost.toString();
                   powerController.text = snapshotConsoResponse.power.toString();
+                  isLoaded = true;
                   futuresList.remove(
                       futureConsoResponse); //Pour optimiser les appels à la bdd, n'appelle plus ConsoReferential à chaque build
                   isLoaded = true;
@@ -512,7 +513,7 @@ class _Calculation extends State<Calculation> {
                                                               hasReceivedResponse =
                                                                   true
                                                       ).whenComplete(() => mainContainerHeight = 850);
-                                                  prefs.setDouble("savedCost", costController.text as double);
+                                                  prefs.setDouble("savedCost", double.parse(costController.text));
                                                 }
                                               });
                                             },
