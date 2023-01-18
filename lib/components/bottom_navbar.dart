@@ -1,3 +1,4 @@
+import 'package:ecodot/screens/region_consumption.dart';
 import 'package:flutter/material.dart';
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
 import 'package:ecodot/screens/calculation.dart';
@@ -25,6 +26,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
         Ranking(),
         Calculation(),
         FranceConsumption(),
+        RegionConsumption(),
       ],
       items: [
         PersistentBottomNavBarItem(
@@ -49,6 +51,11 @@ class _BottomNavbarState extends State<BottomNavbar> {
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.flag_outlined),
+          activeColorPrimary: MyColor.activeColor,
+          inactiveColorPrimary: MyColor.inactiveColor,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(Icons.location_on_outlined),
           activeColorPrimary: MyColor.activeColor,
           inactiveColorPrimary: MyColor.inactiveColor,
         )

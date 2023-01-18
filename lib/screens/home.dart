@@ -84,6 +84,7 @@ class _Home extends State<Home> {
                   child: Column(
                     children: [
                       SizedBox(
+                        //Partie votre conso
                         width: MediaQuery.of(context).size.width,
                         height: 130,
                         child: Card(
@@ -147,21 +148,115 @@ class _Home extends State<Home> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 225,
-                          child: Card(
-                            margin: const EdgeInsets.only(right: 10, left: 10),
-                            color: Colors.white,
-                            shadowColor: Colors.blueGrey,
-                            elevation: 10,
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height: 200,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: 400,
+                            child: Card(
+                              margin: const EdgeInsets.all(10),
+                              color: Colors.white,
+                              shadowColor: Colors.blueGrey,
+                              elevation: 10,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(top: 10),
+                                      child: Image(
+                                        image:
+                                            AssetImage('assets/question.png'),
+                                        height: 60,
+                                        width: 60,
+                                      )),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: Text(
+                                      "Guide",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 20, right: 20, top: 10),
+                                    child: Text(
+                                        "Vous voulez réduire votre consommation énergétique et vous ne savez pas comment faire. Accéder à notre guide des bonnes pratiques que nous vous conseillons de mettre en place."),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.all(25),
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0)),
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Color(0xff27AF56),
+                                            Color(0xffC4FF00)
+                                          ]),
+                                    ),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size.fromHeight(40),
+                                        backgroundColor: Colors.transparent,
+                                        shadowColor: Colors.transparent,
+                                      ),
+                                      onPressed: () async {
+                                        Navigator.push(context,
+                                            MaterialPageRoute<void>(builder:
+                                                (BuildContext context) {
+                                          return Guide();
+                                        }));
+                                      },
+                                      child: const Text(
+                                        'Voir',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: 400,
+                            child: Card(
+                              margin: const EdgeInsets.all(10),
+                              color: Colors.white,
+                              shadowColor: Colors.blueGrey,
+                              elevation: 10,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SplineArea(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(bottom: 150, top: 10),
+                        child: SizedBox(
+                            //Partie challenges
+                            width: MediaQuery.of(context).size.width,
+                            height: 225,
+                            child: Card(
+                              margin:
+                                  const EdgeInsets.only(right: 10, left: 10),
+                              color: Colors.white,
+                              shadowColor: Colors.blueGrey,
+                              elevation: 10,
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  height: 200,
                                   child: Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: Column(children: [
@@ -182,106 +277,8 @@ class _Home extends State<Home> {
                                       ])),
                                 ),
                               ),
-                            ),
-                          )),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 60),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: 400,
-                              child: Card(
-                                margin: const EdgeInsets.all(10),
-                                color: Colors.white,
-                                shadowColor: Colors.blueGrey,
-                                elevation: 10,
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                        padding: EdgeInsets.only(top: 10),
-                                        child: Image(
-                                          image:
-                                              AssetImage('assets/question.png'),
-                                          height: 60,
-                                          width: 60,
-                                        )),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        "Guide",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 20, right: 20, top: 10),
-                                      child: Text(
-                                          "Vous voulez réduire votre consommation énergétique et vous ne savez pas comment faire. Accéder à notre guide des bonnes pratiques que nous vous conseillons de mettre en place."),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.all(25),
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5.0)),
-                                        gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              Color(0xff27AF56),
-                                              Color(0xffC4FF00)
-                                            ]),
-                                      ),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          minimumSize:
-                                              const Size.fromHeight(40),
-                                          backgroundColor: Colors.transparent,
-                                          shadowColor: Colors.transparent,
-                                        ),
-                                        onPressed: () async {
-                                          Navigator.push(context,
-                                              MaterialPageRoute<void>(builder:
-                                                  (BuildContext context) {
-                                            return Guide();
-                                          }));
-                                        },
-                                        child: const Text(
-                                          'Voir',
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 60),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: 400,
-                              child: Card(
-                                margin: const EdgeInsets.all(10),
-                                color: Colors.white,
-                                shadowColor: Colors.blueGrey,
-                                elevation: 10,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: const [
-                                    SplineArea(),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                            )),
+                      )
                     ],
                   ),
                 );

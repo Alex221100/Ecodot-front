@@ -13,7 +13,11 @@ import '../components/spline_area.dart';
 import '../utils/constants.dart';
 
 class SplineArea extends StatefulWidget {
-  const SplineArea({Key? key}) : super(key: key);
+  final franceConsumption;
+  final locality;
+
+  SplineArea({Key? key, this.franceConsumption, this.locality = "France"})
+      : super(key: key);
 
   @override
   _SplineAreaState createState() => _SplineAreaState();
@@ -30,7 +34,7 @@ class _SplineAreaState extends State<SplineArea> {
   SfCartesianChart _buildSplineAreaChart() {
     return SfCartesianChart(
       legend: Legend(isVisible: false, opacity: 0.7),
-      title: ChartTitle(text: "Consommation de la France aujourd'hui"),
+      title: ChartTitle(text: "Consommation en ${widget.locality} aujourd'hui"),
       plotAreaBorderWidth: 0,
       primaryXAxis: DateTimeAxis(),
       primaryYAxis: NumericAxis(
@@ -40,7 +44,7 @@ class _SplineAreaState extends State<SplineArea> {
           labelFormat: '{value}kW',
           axisLine: const AxisLine(width: 0),
           majorTickLines: const MajorTickLines(size: 0)),
-      series: _getSplieAreaSeries(),
+      series: _getSplineAreaSeries(),
       tooltipBehavior: TooltipBehavior(enable: true),
     );
   }
@@ -49,7 +53,7 @@ class _SplineAreaState extends State<SplineArea> {
 
   @override
   void initState() {
-    getFranceConsumption().then((result) {
+    widget.franceConsumption.then((result) {
       for (FranceConsumptionValue item in result) {
         setState(() {
           chartData.add(ChartData(
@@ -68,19 +72,19 @@ class _SplineAreaState extends State<SplineArea> {
 
   /// Returns the list of chart series
   /// which need to render on the spline area chart.
-  List<ChartSeries<ChartData, DateTime>> _getSplieAreaSeries() {
+  List<ChartSeries<ChartData, DateTime>> _getSplineAreaSeries() {
     return <ChartSeries<ChartData, DateTime>>[
       SplineAreaSeries<ChartData, DateTime>(
         dataSource: chartData!,
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [Color(0xff27AF56), Color(0xffC4FF00)]),
         color: const Color(0xff27AF56),
         borderColor: const Color(0xff27AF56),
         borderWidth: 2,
-        xValueMapper: (ChartData sales, _) => sales.y1,
-        yValueMapper: (ChartData sales, _) => sales.y2,
+        xValueMapper: (ChartData data, _) => data.y1,
+        yValueMapper: (ChartData data, _) => data.y2,
       ),
     ];
   }

@@ -53,6 +53,7 @@ class _Calculation extends State<Calculation> {
   //Tarif kWh sauvegardé
   double savedCost = 0;
 
+
   List<String> deviceTypes = [];
   late Future<DeviceTypes> futureDeviceTypes;
   late Future<ConsoResponse> futureConsoResponse;
@@ -62,6 +63,7 @@ class _Calculation extends State<Calculation> {
 
   late SharedPreferences prefs;
 
+
   @override
   void initState() {
     super.initState();
@@ -70,7 +72,7 @@ class _Calculation extends State<Calculation> {
     futureConsoResponse = futureDeviceTypes
         .then((value) => fetchConsoResponse(value.deviceNameArrayList.first));
     futurePrefs = SharedPreferences.getInstance();
-    futuresList = [futureDeviceTypes,futurePrefs,futureConsoResponse];
+    futuresList = [futureDeviceTypes, futurePrefs, futureConsoResponse];
   }
 
   @override
@@ -78,20 +80,24 @@ class _Calculation extends State<Calculation> {
     return MyLayout(
         child: FutureBuilder(
             future: Future.wait(futuresList),
-            builder: (context, AsyncSnapshot snapshot) {
+            builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
               if (snapshot.hasData) {
                 deviceTypes = snapshot.data![0].deviceNameArrayList;
                 prefs = snapshot.data![1];
+
                 if (!isLoaded) {
                   ConsoResponse snapshotConsoResponse = snapshot.data![2];
-                  savedCost = prefs.getDouble("savedCost") == null ? 0 : prefs.getDouble("savedCost")!;
-                  costController.text  = savedCost.toString();
+                  savedCost =
+                  prefs.getDouble("savedCost") == null ? 0 : prefs.getDouble(
+                      "savedCost")!;
+                  costController.text = savedCost.toString();
                   powerController.text = snapshotConsoResponse.power.toString();
                   isLoaded = true;
-                  futuresList.remove(
-                      futureConsoResponse); //Pour optimiser les appels à la bdd, n'appelle plus ConsoReferential à chaque build
-                  isLoaded = true;
+                } else if (hasReceivedResponse && snapshot.data!.length > 3){
+                  calculConsoResponse = snapshot.data![3];
+                  futuresList.remove(futureCalculConsoResponse);
                 }
+
                 return Container(
                     alignment: Alignment.topCenter,
                     padding: EdgeInsets.only(top: 15),
@@ -126,148 +132,156 @@ class _Calculation extends State<Calculation> {
                                   child: Container(
                                       child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                           children: [
-                                        //Champ coût
-                                        Expanded(
-                                            flex: 7,
-                                            child: Container(
-                                              padding: EdgeInsets.only(top: 12),
-                                              child: new TextField(
-                                                  controller: costController,
-                                                  onTap: () {
-                                                    deviseTextColor =
-                                                        Colors.grey;
-                                                    durationUnitMacroTextColor =
-                                                        Colors.grey;
-                                                    durationUnitMicroTextColor =
-                                                        Colors.grey;
-                                                    deviceTypeTextColor =
-                                                        Colors.grey;
+                                            //Champ coût
+                                            Expanded(
+                                                flex: 7,
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      top: 12),
+                                                  child: new TextField(
+                                                      controller: costController,
+                                                      onTap: () {
+                                                        deviseTextColor =
+                                                            Colors.grey;
+                                                        durationUnitMacroTextColor =
+                                                            Colors.grey;
+                                                        durationUnitMicroTextColor =
+                                                            Colors.grey;
+                                                        deviceTypeTextColor =
+                                                            Colors.grey;
 
-                                                    setState(() {});
-                                                  },
-                                                  textAlign: TextAlign.center,
-                                                  keyboardType:
+                                                        setState(() {});
+                                                      },
+                                                      textAlign: TextAlign
+                                                          .center,
+                                                      keyboardType:
                                                       TextInputType.number,
-                                                  decoration:
+                                                      decoration:
                                                       new InputFieldDecorationGeneric1(
                                                           'Tarif du kWh')),
-                                            )),
-                                        Spacer(), //Espace entre les 2
-                                        //Champ devise
-                                        Expanded(
-                                            flex: 7,
-                                            child: Stack(children: [
-                                              Container(
-                                                  padding:
+                                                )),
+                                            Spacer(), //Espace entre les 2
+                                            //Champ devise
+                                            Expanded(
+                                                flex: 7,
+                                                child: Stack(children: [
+                                                  Container(
+                                                      padding:
                                                       EdgeInsets.only(top: 12),
-                                                  child:
+                                                      child:
                                                       DropdownButtonFormField<
                                                           String>(
-                                                    value: devise,
-                                                    alignment:
+                                                        value: devise,
+                                                        alignment:
                                                         AlignmentDirectional
                                                             .center,
-                                                    items: [
-                                                      DropdownMenuItem(
-                                                        value: "€",
-                                                        child: Text("€"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "\$",
-                                                        child: Text("\$"),
-                                                      )
-                                                    ],
-                                                    decoration:
+                                                        items: [
+                                                          DropdownMenuItem(
+                                                            value: "€",
+                                                            child: Text("€"),
+                                                          ),
+                                                          DropdownMenuItem(
+                                                            value: "\$",
+                                                            child: Text("\$"),
+                                                          )
+                                                        ],
+                                                        decoration:
                                                         InputFieldDecorationGeneric1(
                                                             ""),
-                                                    onTap: () {
-                                                      deviseTextColor = Colors
-                                                          .lightGreenAccent;
+                                                        onTap: () {
+                                                          deviseTextColor =
+                                                              Colors
+                                                                  .lightGreenAccent;
 
-                                                      durationUnitMacroTextColor =
-                                                          Colors.grey;
-                                                      durationUnitMicroTextColor =
-                                                          Colors.grey;
-                                                      deviceTypeTextColor =
-                                                          Colors.grey;
+                                                          durationUnitMacroTextColor =
+                                                              Colors.grey;
+                                                          durationUnitMicroTextColor =
+                                                              Colors.grey;
+                                                          deviceTypeTextColor =
+                                                              Colors.grey;
 
-                                                      setState(() {});
-                                                    },
-                                                    onChanged: (String? value) {
-                                                      devise = value!;
-                                                    },
-                                                  )),
-                                              Positioned(
-                                                  left: 11,
-                                                  top: 6,
-                                                  child: Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 5, right: 5),
-                                                      //Ce padding crée un "blanc" pour couper la ligne en dessous
-                                                      color: Colors.white,
-                                                      child: Text("Unité",
-                                                          style: TextStyle(
-                                                              color:
+                                                          setState(() {});
+                                                        },
+                                                        onChanged: (
+                                                            String? value) {
+                                                          devise = value!;
+                                                        },
+                                                      )),
+                                                  Positioned(
+                                                      left: 11,
+                                                      top: 6,
+                                                      child: Container(
+                                                          padding: EdgeInsets
+                                                              .only(
+                                                              left: 5,
+                                                              right: 5),
+                                                          //Ce padding crée un "blanc" pour couper la ligne en dessous
+                                                          color: Colors.white,
+                                                          child: Text("Unité",
+                                                              style: TextStyle(
+                                                                  color:
                                                                   deviseTextColor,
-                                                              fontSize: 12)))),
-                                            ]))
-                                      ]))),
+                                                                  fontSize: 12)))),
+                                                ]))
+                                          ]))),
                               Container(
-                                  //2nde ligne
+                                //2nde ligne
                                   child:
-                                      //Champ type appareil
-                                      Stack(children: [
-                                FractionallySizedBox(
-                                    widthFactor: 0.9,
-                                    child: Container(
-                                        padding: EdgeInsets.only(top: 12),
-                                        child: DropdownButtonFormField<String>(
-                                          value: deviceTypes.first,
-                                          alignment:
+                                  //Champ type appareil
+                                  Stack(children: [
+                                    FractionallySizedBox(
+                                        widthFactor: 0.9,
+                                        child: Container(
+                                            padding: EdgeInsets.only(top: 12),
+                                            child: DropdownButtonFormField<
+                                                String>(
+                                              value: deviceTypes.first,
+                                              alignment:
                                               AlignmentDirectional.center,
-                                          items:
+                                              items:
                                               deviceTypes.map((String value) {
-                                            return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value));
-                                          }).toList(),
-                                          decoration:
+                                                return DropdownMenuItem<String>(
+                                                    value: value,
+                                                    child: Text(value));
+                                              }).toList(),
+                                              decoration:
                                               InputFieldDecorationGeneric1(""),
-                                          onTap: () {
-                                            deviceTypeTextColor =
-                                                Colors.lightGreenAccent;
+                                              onTap: () {
+                                                deviceTypeTextColor =
+                                                    Colors.lightGreenAccent;
 
-                                            durationUnitMacroTextColor =
-                                                Colors.grey;
-                                            durationUnitMicroTextColor =
-                                                Colors.grey;
-                                            deviseTextColor = Colors.grey;
+                                                durationUnitMacroTextColor =
+                                                    Colors.grey;
+                                                durationUnitMicroTextColor =
+                                                    Colors.grey;
+                                                deviseTextColor = Colors.grey;
 
-                                            setState(() {});
-                                          },
-                                          onChanged: (String? value) async {
-                                            deviceType = value!;
-                                            ConsoResponse consoResponse =
+                                                setState(() {});
+                                              },
+                                              onChanged: (String? value) async {
+                                                deviceType = value!;
+                                                ConsoResponse consoResponse =
                                                 await fetchConsoResponse(
                                                     deviceType);
-                                            powerController.text =
-                                                consoResponse.power.toString();
-                                          },
-                                        ))),
-                                Positioned(
-                                    left: 11,
-                                    top: 6,
-                                    child: Container(
-                                        padding:
+                                                powerController.text =
+                                                    consoResponse.power
+                                                        .toString();
+                                              },
+                                            ))),
+                                    Positioned(
+                                        left: 11,
+                                        top: 6,
+                                        child: Container(
+                                            padding:
                                             EdgeInsets.only(left: 5, right: 5),
-                                        color: Colors.white,
-                                        child: Text("Type d'appareil",
-                                            style: TextStyle(
-                                                color: deviceTypeTextColor,
-                                                fontSize: 12)))),
-                              ])),
+                                            color: Colors.white,
+                                            child: Text("Type d'appareil",
+                                                style: TextStyle(
+                                                    color: deviceTypeTextColor,
+                                                    fontSize: 12)))),
+                                  ])),
                               //3ème ligne
                               FractionallySizedBox(
                                   widthFactor: 0.9,
@@ -288,8 +302,8 @@ class _Calculation extends State<Calculation> {
                                         textAlign: TextAlign.center,
                                         keyboardType: TextInputType.number,
                                         decoration:
-                                            new InputFieldDecorationGeneric1(
-                                                'Puissance de l\'appareil')),
+                                        new InputFieldDecorationGeneric1(
+                                            'Puissance de l\'appareil')),
                                   )),
                               //4ème ligne
                               FractionallySizedBox(
@@ -297,186 +311,196 @@ class _Calculation extends State<Calculation> {
                                   child: Container(
                                       child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                           children: [
-                                        //Champ durée
-                                        Expanded(
-                                            flex: 7,
-                                            child: Container(
-                                              padding: EdgeInsets.only(top: 12),
-                                              child: new TextField(
-                                                  controller:
+                                            //Champ durée
+                                            Expanded(
+                                                flex: 7,
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      top: 12),
+                                                  child: new TextField(
+                                                      controller:
                                                       durationController,
-                                                  onTap: () {
-                                                    deviseTextColor =
-                                                        Colors.grey;
-                                                    durationUnitMacroTextColor =
-                                                        Colors.grey;
-                                                    durationUnitMicroTextColor =
-                                                        Colors.grey;
-                                                    deviceTypeTextColor =
-                                                        Colors.grey;
+                                                      onTap: () {
+                                                        deviseTextColor =
+                                                            Colors.grey;
+                                                        durationUnitMacroTextColor =
+                                                            Colors.grey;
+                                                        durationUnitMicroTextColor =
+                                                            Colors.grey;
+                                                        deviceTypeTextColor =
+                                                            Colors.grey;
 
-                                                    setState(() {});
-                                                  },
-                                                  textAlign: TextAlign.center,
-                                                  keyboardType:
+                                                        setState(() {});
+                                                      },
+                                                      textAlign: TextAlign
+                                                          .center,
+                                                      keyboardType:
                                                       TextInputType.number,
-                                                  decoration:
+                                                      decoration:
                                                       new InputFieldDecorationGeneric1(
                                                           'Durée')),
-                                            )),
-                                        Spacer(), //Espace entre les 2
-                                        //Champ unité micro
-                                        Expanded(
-                                            flex: 7,
-                                            child: Stack(children: [
-                                              Container(
-                                                  padding:
+                                                )),
+                                            Spacer(), //Espace entre les 2
+                                            //Champ unité micro
+                                            Expanded(
+                                                flex: 7,
+                                                child: Stack(children: [
+                                                  Container(
+                                                      padding:
                                                       EdgeInsets.only(top: 12),
-                                                  child:
+                                                      child:
                                                       DropdownButtonFormField<
                                                           String>(
-                                                    value: durationUnitMicro,
-                                                    alignment:
+                                                        value: durationUnitMicro,
+                                                        alignment:
                                                         AlignmentDirectional
                                                             .center,
-                                                    items: [
-                                                      DropdownMenuItem(
-                                                        value: "heure(s)",
-                                                        child: Text("heure(s)"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "minute(s)",
-                                                        child:
+                                                        items: [
+                                                          DropdownMenuItem(
+                                                            value: "heure(s)",
+                                                            child: Text(
+                                                                "heure(s)"),
+                                                          ),
+                                                          DropdownMenuItem(
+                                                            value: "minute(s)",
+                                                            child:
                                                             Text("minute(s)"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "seconde(s)",
-                                                        child:
+                                                          ),
+                                                          DropdownMenuItem(
+                                                            value: "seconde(s)",
+                                                            child:
                                                             Text("seconde(s)"),
-                                                      )
-                                                    ],
-                                                    decoration:
+                                                          )
+                                                        ],
+                                                        decoration:
                                                         InputFieldDecorationGeneric1(
                                                             ""),
-                                                    onTap: () {
-                                                      durationUnitMicroTextColor =
-                                                          Colors
-                                                              .lightGreenAccent;
+                                                        onTap: () {
+                                                          durationUnitMicroTextColor =
+                                                              Colors
+                                                                  .lightGreenAccent;
 
-                                                      durationUnitMacroTextColor =
-                                                          Colors.grey;
-                                                      deviseTextColor =
-                                                          Colors.grey;
-                                                      deviceTypeTextColor =
-                                                          Colors.grey;
+                                                          durationUnitMacroTextColor =
+                                                              Colors.grey;
+                                                          deviseTextColor =
+                                                              Colors.grey;
+                                                          deviceTypeTextColor =
+                                                              Colors.grey;
 
-                                                      setState(() {});
-                                                    },
-                                                    onChanged: (String? value) {
-                                                      durationUnitMicro =
+                                                          setState(() {});
+                                                        },
+                                                        onChanged: (
+                                                            String? value) {
+                                                          durationUnitMicro =
                                                           value!;
-                                                    },
-                                                  )),
-                                              Positioned(
-                                                  left: 11,
-                                                  top: 6,
-                                                  child: Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 5, right: 5),
-                                                      //Ce padding crée un "blanc" pour couper la ligne en dessous
-                                                      color: Colors.white,
-                                                      child: Text("Unité",
-                                                          style: TextStyle(
-                                                              color:
+                                                        },
+                                                      )),
+                                                  Positioned(
+                                                      left: 11,
+                                                      top: 6,
+                                                      child: Container(
+                                                          padding: EdgeInsets
+                                                              .only(
+                                                              left: 5,
+                                                              right: 5),
+                                                          //Ce padding crée un "blanc" pour couper la ligne en dessous
+                                                          color: Colors.white,
+                                                          child: Text("Unité",
+                                                              style: TextStyle(
+                                                                  color:
                                                                   durationUnitMicroTextColor,
-                                                              fontSize: 12)))),
-                                            ]))
-                                      ]))),
+                                                                  fontSize: 12)))),
+                                                ]))
+                                          ]))),
                               //5ème ligne
                               FractionallySizedBox(
                                   widthFactor: 0.9,
                                   child: Container(
                                       child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                           children: [
-                                        Expanded(
-                                            flex: 7,
-                                            child: Container(
-                                              padding: EdgeInsets.only(top: 12),
-                                              child: new Text(
-                                                "Par",
-                                                textAlign: TextAlign.right,
-                                              ),
-                                            )),
-                                        Spacer(), //Espace entre les 2
-                                        //Champ unité durée macro
-                                        Expanded(
-                                            flex: 7,
-                                            child: Stack(children: [
-                                              Container(
-                                                  padding:
+                                            Expanded(
+                                                flex: 7,
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      top: 12),
+                                                  child: new Text(
+                                                    "Par",
+                                                    textAlign: TextAlign.right,
+                                                  ),
+                                                )),
+                                            Spacer(), //Espace entre les 2
+                                            //Champ unité durée macro
+                                            Expanded(
+                                                flex: 7,
+                                                child: Stack(children: [
+                                                  Container(
+                                                      padding:
                                                       EdgeInsets.only(top: 12),
-                                                  child:
+                                                      child:
                                                       DropdownButtonFormField<
                                                           String>(
-                                                    value: durationUnitMacro,
-                                                    alignment:
+                                                        value: durationUnitMacro,
+                                                        alignment:
                                                         AlignmentDirectional
                                                             .center,
-                                                    items: [
-                                                      DropdownMenuItem(
-                                                        value: "jour",
-                                                        child: Text("jour"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "mois",
-                                                        child: Text("mois"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "an",
-                                                        child: Text("an"),
-                                                      )
-                                                    ],
-                                                    decoration:
+                                                        items: [
+                                                          DropdownMenuItem(
+                                                            value: "jour",
+                                                            child: Text("jour"),
+                                                          ),
+                                                          DropdownMenuItem(
+                                                            value: "mois",
+                                                            child: Text("mois"),
+                                                          ),
+                                                          DropdownMenuItem(
+                                                            value: "an",
+                                                            child: Text("an"),
+                                                          )
+                                                        ],
+                                                        decoration:
                                                         InputFieldDecorationGeneric1(
                                                             ""),
-                                                    onTap: () {
-                                                      durationUnitMacroTextColor =
-                                                          Colors
-                                                              .lightGreenAccent;
+                                                        onTap: () {
+                                                          durationUnitMacroTextColor =
+                                                              Colors
+                                                                  .lightGreenAccent;
 
-                                                      deviseTextColor =
-                                                          Colors.grey;
-                                                      deviceTypeTextColor =
-                                                          Colors.grey;
-                                                      durationUnitMicroTextColor =
-                                                          Colors.grey;
+                                                          deviseTextColor =
+                                                              Colors.grey;
+                                                          deviceTypeTextColor =
+                                                              Colors.grey;
+                                                          durationUnitMicroTextColor =
+                                                              Colors.grey;
 
-                                                      setState(() {});
-                                                    },
-                                                    onChanged: (String? value) {
-                                                      durationUnitMacro =
+                                                          setState(() {});
+                                                        },
+                                                        onChanged: (
+                                                            String? value) {
+                                                          durationUnitMacro =
                                                           value!;
-                                                    },
-                                                  )),
-                                              Positioned(
-                                                  left: 11,
-                                                  top: 6,
-                                                  child: Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 5, right: 5),
-                                                      //Ce padding crée un "blanc" pour couper la ligne en dessous
-                                                      color: Colors.white,
-                                                      child: Text("Unité",
-                                                          style: TextStyle(
-                                                              color:
+                                                        },
+                                                      )),
+                                                  Positioned(
+                                                      left: 11,
+                                                      top: 6,
+                                                      child: Container(
+                                                          padding: EdgeInsets
+                                                              .only(
+                                                              left: 5,
+                                                              right: 5),
+                                                          //Ce padding crée un "blanc" pour couper la ligne en dessous
+                                                          color: Colors.white,
+                                                          child: Text("Unité",
+                                                              style: TextStyle(
+                                                                  color:
                                                                   durationUnitMacroTextColor,
-                                                              fontSize: 12)))),
-                                            ]))
-                                      ]))),
+                                                                  fontSize: 12)))),
+                                                ]))
+                                          ]))),
                               //Dernière ligne (bouton)
                               Container(
                                   padding: EdgeInsets.only(top: 20),
@@ -495,25 +519,26 @@ class _Calculation extends State<Calculation> {
                                                         "") {
                                                   futureCalculConsoResponse =
                                                       fetchCalculConsoResponse(
-                                                              double.parse(
-                                                                  costController
-                                                                      .text),
-                                                              double.parse(
-                                                                  powerController
-                                                                      .text),
-                                                              int.parse(
-                                                                  durationController
-                                                                      .text),
-                                                              durationUnitMicro,
-                                                              durationUnitMacro)
-                                                          .then((value) =>
-                                                              calculConsoResponse =
-                                                                  value)
+                                                          double.parse(
+                                                              costController
+                                                                  .text),
+                                                          double.parse(
+                                                              powerController
+                                                                  .text),
+                                                          int.parse(
+                                                              durationController
+                                                                  .text),
+                                                          durationUnitMicro,
+                                                          durationUnitMacro)
                                                           .whenComplete(() =>
-                                                              hasReceivedResponse =
-                                                                  true
-                                                      ).whenComplete(() => mainContainerHeight = 850);
-                                                  prefs.setDouble("savedCost", double.parse(costController.text));
+                                                      hasReceivedResponse = true
+                                                          );
+                                                  futuresList.add(
+                                                      futureCalculConsoResponse);
+                                                  mainContainerHeight = 850;
+                                                  prefs.setDouble("savedCost",
+                                                      double.parse(
+                                                          costController.text));
                                                 }
                                               });
                                             },
@@ -526,144 +551,156 @@ class _Calculation extends State<Calculation> {
                                     child: FractionallySizedBox(
                                         widthFactor: 0.9,
                                         child: Container(
-                                            //Zone résultats
+                                          //Zone résultats
                                             child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
                                               children: [
-                                                Container(
-                                                    padding: EdgeInsets.only(
-                                                        right: 5),
-                                                    child: Icon(Icons.circle,
-                                                        color: Colors.green,
-                                                        size: 15)),
-                                                LimitedBox(
-                                                    maxWidth: 125,
-                                                    child: AutoSizeText(
-                                                      "Consommation totale horaire",
-                                                      maxLines: 3,
-                                                    )),
-                                                Spacer(),
-                                                Text(double.parse(calculConsoResponse
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                        padding: EdgeInsets
+                                                            .only(
+                                                            right: 5),
+                                                        child: Icon(
+                                                            Icons.circle,
+                                                            color: Colors.green,
+                                                            size: 15)),
+                                                    LimitedBox(
+                                                        maxWidth: 125,
+                                                        child: AutoSizeText(
+                                                          "Consommation totale horaire",
+                                                          maxLines: 3,
+                                                        )),
+                                                    Spacer(),
+                                                    Text(double.parse(
+                                                        calculConsoResponse
                                                             .totalConsumptionPerHour
                                                             .toStringAsFixed(4))
                                                         .toString() +
-                                                    " kW"),
-                                                Spacer(),
-                                                Text(double.parse(
-                                                            calculConsoResponse
-                                                                .totalCostPerHour
-                                                                .toStringAsFixed(
-                                                                    2))
+                                                        " kW"),
+                                                    Spacer(),
+                                                    Text(double.parse(
+                                                        calculConsoResponse
+                                                            .totalCostPerHour
+                                                            .toStringAsFixed(
+                                                            2))
                                                         .toString() +
-                                                    devise),
-                                              ],
-                                            ),
-                                            Divider(),
-                                            Row(
-                                              mainAxisAlignment:
+                                                        devise),
+                                                  ],
+                                                ),
+                                                Divider(),
+                                                Row(
+                                                  mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                    padding: EdgeInsets.only(
-                                                        right: 5),
-                                                    child: Icon(Icons.circle,
-                                                        color: Colors.green,
-                                                        size: 15)),
-                                                LimitedBox(
-                                                    maxWidth: 125,
-                                                    child: AutoSizeText(
-                                                      "Consommation totale journalière",
-                                                      maxLines: 3,
-                                                      overflow:
+                                                  children: [
+                                                    Container(
+                                                        padding: EdgeInsets
+                                                            .only(
+                                                            right: 5),
+                                                        child: Icon(
+                                                            Icons.circle,
+                                                            color: Colors.green,
+                                                            size: 15)),
+                                                    LimitedBox(
+                                                        maxWidth: 125,
+                                                        child: AutoSizeText(
+                                                          "Consommation totale journalière",
+                                                          maxLines: 3,
+                                                          overflow:
                                                           TextOverflow.ellipsis,
-                                                    )),
-                                                Spacer(),
-                                                Text(double.parse(calculConsoResponse
+                                                        )),
+                                                    Spacer(),
+                                                    Text(double.parse(
+                                                        calculConsoResponse
                                                             .totalConsumptionPerDay
                                                             .toStringAsFixed(4))
                                                         .toString() +
-                                                    " kW"),
-                                                Spacer(),
-                                                Text(double.parse(
-                                                            calculConsoResponse
-                                                                .totalCostPerDay
-                                                                .toStringAsFixed(
-                                                                    2))
+                                                        " kW"),
+                                                    Spacer(),
+                                                    Text(double.parse(
+                                                        calculConsoResponse
+                                                            .totalCostPerDay
+                                                            .toStringAsFixed(
+                                                            2))
                                                         .toString() +
-                                                    devise),
-                                              ],
-                                            ),
-                                            Divider(),
-                                            Row(
-                                              mainAxisAlignment:
+                                                        devise),
+                                                  ],
+                                                ),
+                                                Divider(),
+                                                Row(
+                                                  mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                    padding: EdgeInsets.only(
-                                                        right: 5),
-                                                    child: Icon(Icons.circle,
-                                                        color: Colors.green,
-                                                        size: 15)),
-                                                LimitedBox(
-                                                    maxWidth: 125,
-                                                    child: AutoSizeText(
-                                                      "Consommation totale mensuelle",
-                                                      maxLines: 3,
-                                                    )),
-                                                Spacer(),
-                                                Text(double.parse(calculConsoResponse
+                                                  children: [
+                                                    Container(
+                                                        padding: EdgeInsets
+                                                            .only(
+                                                            right: 5),
+                                                        child: Icon(
+                                                            Icons.circle,
+                                                            color: Colors.green,
+                                                            size: 15)),
+                                                    LimitedBox(
+                                                        maxWidth: 125,
+                                                        child: AutoSizeText(
+                                                          "Consommation totale mensuelle",
+                                                          maxLines: 3,
+                                                        )),
+                                                    Spacer(),
+                                                    Text(double.parse(
+                                                        calculConsoResponse
                                                             .totalConsumptionPerMonth
                                                             .toStringAsFixed(2))
                                                         .toString() +
-                                                    " kW"),
-                                                Spacer(),
-                                                Text(double.parse(
-                                                            calculConsoResponse
-                                                                .totalCostPerMonth
-                                                                .toStringAsFixed(
-                                                                    2))
+                                                        " kW"),
+                                                    Spacer(),
+                                                    Text(double.parse(
+                                                        calculConsoResponse
+                                                            .totalCostPerMonth
+                                                            .toStringAsFixed(
+                                                            2))
                                                         .toString() +
-                                                    devise),
-                                              ],
-                                            ),
-                                            Divider(),
-                                            Row(
-                                              mainAxisAlignment:
+                                                        devise),
+                                                  ],
+                                                ),
+                                                Divider(),
+                                                Row(
+                                                  mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                    padding: EdgeInsets.only(
-                                                        right: 5),
-                                                    child: Icon(Icons.circle,
-                                                        color: Colors.green,
-                                                        size: 15)),
-                                                LimitedBox(
-                                                    maxWidth: 125,
-                                                    child: AutoSizeText(
-                                                      "Consommation totale annuelle",
-                                                      maxLines: 3,
-                                                    )),
-                                                Spacer(),
-                                                Text(double.parse(calculConsoResponse
+                                                  children: [
+                                                    Container(
+                                                        padding: EdgeInsets
+                                                            .only(
+                                                            right: 5),
+                                                        child: Icon(
+                                                            Icons.circle,
+                                                            color: Colors.green,
+                                                            size: 15)),
+                                                    LimitedBox(
+                                                        maxWidth: 125,
+                                                        child: AutoSizeText(
+                                                          "Consommation totale annuelle",
+                                                          maxLines: 3,
+                                                        )),
+                                                    Spacer(),
+                                                    Text(double.parse(
+                                                        calculConsoResponse
                                                             .totalConsumptionPerYear
                                                             .toStringAsFixed(2))
                                                         .toString() +
-                                                    " kW"),
-                                                Spacer(),
-                                                Text(double.parse(
-                                                            calculConsoResponse
-                                                                .totalCostPerYear
-                                                                .toStringAsFixed(
-                                                                    2))
+                                                        " kW"),
+                                                    Spacer(),
+                                                    Text(double.parse(
+                                                        calculConsoResponse
+                                                            .totalCostPerYear
+                                                            .toStringAsFixed(
+                                                            2))
                                                         .toString() +
-                                                    devise),
+                                                        devise),
+                                                  ],
+                                                ),
                                               ],
-                                            ),
-                                          ],
-                                        )))),
+                                            )))),
                             ]))));
               }
               return const Center(child: CircularProgressIndicator());
