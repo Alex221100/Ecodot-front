@@ -28,12 +28,12 @@ class _RegionConsumption extends State<RegionConsumption> {
     )));
   }
 
-  Map<String, String> get headers => {
+  static Map<String, String> get headers => {
         'Content-Type': 'application/json; charset=UTF-8',
         "Accept": "application/json"
       };
 
-  Future<Map<String, double>> getRegionConsumption() async {
+  static Future<Map<String, double>> getRegionConsumption() async {
     http.Response response = await http.get(
         Uri.parse("http://localhost:8080/consommation/region"),
         headers: headers);
