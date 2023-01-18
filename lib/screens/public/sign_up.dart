@@ -4,6 +4,7 @@ import 'package:ecodot/components/sign_in/form_enedis.dart';
 import 'package:ecodot/components/sign_in/form_house.dart';
 import 'package:ecodot/components/sign_in/form_information.dart';
 import 'package:ecodot/components/sign_in/sign_in_dataholder.dart';
+import 'package:ecodot/screens/form_enedis_settings.dart';
 import 'package:ecodot/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -134,7 +135,7 @@ class _SignUp extends State<SignUp> {
                               side: const BorderSide(
                                   width: 1, color: Color(0xff8A8D93)),
                             ),
-                            onPressed: goHome,
+                            onPressed: goSetupEnedis,
                             child: const Text(
                               'Terminer',
                               style:
@@ -164,6 +165,32 @@ class _SignUp extends State<SignUp> {
         "Accept": "application/json"
       };
 
+  goSetupEnedis() async{
+    String body = jsonEncode({
+    'lastname': SignInDataHolder.of(context).user.lastname,
+    'firstname': SignInDataHolder.of(context).user.firstname,
+    'email': SignInDataHolder.of(context).user.email,
+    'password': SignInDataHolder.of(context).user.password,
+    'nbPersonHouse': SignInDataHolder.of(context).user.nbPersonHouse,
+    'cityCode': SignInDataHolder.of(context).user.cityCode,
+    'city': SignInDataHolder.of(context).user.city,
+    });
+
+    http.Response response = await http.post(
+    Uri.parse(AppConstants().rootURI +
+    ":" +
+    AppConstants().rootPort +
+    "/authentication/signup"),
+    headers: headers,
+    body: body);
+
+    // if (response.statusCode == 200) {
+      Navigator.push(context,
+      MaterialPageRoute<void>(builder: (BuildContext context) {
+        return FormEnedisSettings();
+      }));
+    // }
+  }
   goHome() async {
     //sign in the user
     String body = jsonEncode({

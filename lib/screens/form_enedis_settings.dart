@@ -54,7 +54,7 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
                 padding: EdgeInsets.only(bottom: 20),
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: Text("Suivez vos consommations énergétiques",
+                  child: Text("Connectez votre compteur linky",
                       textAlign: TextAlign.left,
                       style:
                           TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
@@ -77,7 +77,6 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
               ),
               TextFormField(
                 onChanged: (value) => setState(() => enedisPDL = value),
-                obscureText: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
@@ -111,26 +110,9 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
                     }
                   },
                   child: const Text(
-                    'Se connecter',
+                    'Sauvegarder',
                     style: TextStyle(fontSize: 15),
                   ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 10),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    "Vous avez oublié votre mot de passe ? ",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-              const Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  "Réintialisez-le.",
-                  style: TextStyle(fontSize: 16),
                 ),
               ),
             ],
