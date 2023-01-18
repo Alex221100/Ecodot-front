@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:ecodot/components/application_dataholder.dart';
 import 'package:ecodot/screens/home.dart';
 import 'package:flutter/material.dart';
@@ -104,9 +105,20 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
                     http.Response req =
                         await saveTokenPDL(token, enedisToken, enedisPDL);
                     if (req.statusCode == 200) {
-                      applicationDataHolder.applicationStorage
-                          .setToken(req.body);
                       Navigator.pushNamed(context, "/");
+                    }
+                    else{
+                      Navigator.push(context, new MaterialPageRoute(
+                        builder: (context) =>
+                        FormEnedisSettings())
+                      );
+                    Flushbar(
+                        duration: Duration(seconds: 3),
+                        flushbarPosition: FlushbarPosition.TOP,
+                        message:
+                            "Une erreur est survenue, veuillez réessayer plus tard.",
+                        backgroundColor: Colors.red,
+                      )..show(context);
                     }
                   },
                   child: const Text(

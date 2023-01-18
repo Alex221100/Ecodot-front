@@ -217,17 +217,18 @@ class _MyConsumption extends State<MyConsumption> {
           MyConsumptionModel.fromJson(jsonDecode(response.body));
       return mcm;
     } else if (response.statusCode == 204 || response.statusCode == 400) {
-      Flushbar(
+        Navigator.push(context, new MaterialPageRoute(
+          builder: (context) =>
+          FormEnedisSettings())
+        );
+        Flushbar(
           duration: Duration(seconds: 3),
           flushbarPosition: FlushbarPosition.TOP,
           message:
               "Veuillez vérifier vos données Enedis.",
           backgroundColor: Colors.red,
         )..show(context);
-        Navigator.push(context, new MaterialPageRoute(
-          builder: (context) =>
-          new FormEnedisSettings())
-        );
+
         return MyConsumptionModel();
       } else if (response.statusCode == 429) {
       throw Exception("We're working on it, please retry later(Like tomorrow)");
