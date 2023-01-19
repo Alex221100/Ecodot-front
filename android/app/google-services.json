@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "286864240404",
+    "project_id": "ecodotdev-820a8",
+    "storage_bucket": "ecodotdev-820a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286864240404:android:d96eff518b30ec9fb29c01",
+        "android_client_info": {
+          "package_name": "com.example.ecodot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286864240404-7pdk8vtuoi8ujpuurb39qsu5tqs19gjs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIeZ3JZ5itaNRwdxJa99xvAeafkJNI2RQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "286864240404-7pdk8vtuoi8ujpuurb39qsu5tqs19gjs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "286864240404-vbom9qru360mbatqom6upn40u56a5efg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ecodot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
