@@ -1,5 +1,8 @@
+import 'package:ecodot/model/my_consumption_model.dart';
+
 class ApplicationStorage {
   late String token;
+  late MyConsumptionModel consumption;
 
   ApplicationStorage() {}
 
@@ -10,5 +13,9 @@ class ApplicationStorage {
 
   setToken(String tokenParam) {
     token = tokenParam;
+  }
+
+  setConsumption(MyConsumptionModel consumptionParam) {
+    consumption = consumptionParam;
   }
 }
