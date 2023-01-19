@@ -56,7 +56,7 @@ class _MyConsumption extends State<MyConsumption> {
         return DoubleValueTextWithCircle(
           consumption: daycons,
           currency: '€',
-          priceInCents: daycons * 0.1841,
+          priceInCents: daycons * 2041,
           foregroundColor: Color(0xff56CA00),
           //maxValue: 12.5, set exemple value for demo
           maxValue: daycons * 1.2,
@@ -66,7 +66,7 @@ class _MyConsumption extends State<MyConsumption> {
         return DoubleValueTextWithCircle(
           consumption: weekcons,
           currency: '€',
-          priceInCents: weekcons * 0.1841,
+          priceInCents: weekcons * 2041,
           foregroundColor: Color(0xff56CA00),
           //maxValue: 87.5, set exemple value for demo
           maxValue: weekcons * 1.34,
@@ -76,7 +76,7 @@ class _MyConsumption extends State<MyConsumption> {
         return DoubleValueTextWithCircle(
           consumption: monthcons,
           currency: '€',
-          priceInCents: monthcons * 0.1841,
+          priceInCents: monthcons * 2041,
           foregroundColor: Color(0xff56CA00),
           //maxValue: 390, set exemple value for demo
           maxValue: monthcons * 1.111,
@@ -86,7 +86,7 @@ class _MyConsumption extends State<MyConsumption> {
         return DoubleValueTextWithCircle(
           consumption: yearcons,
           currency: '€',
-          priceInCents: yearcons * 0.1841,
+          priceInCents: yearcons * 2041,
           foregroundColor: Color(0xff56CA00),
           //maxValue: 4679, set exemple value for demo
           maxValue: yearcons * 1.34,
