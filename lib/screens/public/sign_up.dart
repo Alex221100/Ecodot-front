@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/application_dataholder.dart';
 import '../../main.dart';
 import '../../model/my_consumption_model.dart';
+import '../../rest/challenge.dart';
 import '../home.dart';
 
 class SignUp extends StatefulWidget {
@@ -237,6 +238,12 @@ class _SignUp extends State<SignUp> {
       if (reqlogin.statusCode == 200){
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         sharedPreferences.setString("currentusermail", SignInDataHolder.of(context).user.email);
+        Challenges challenges = await fetchChallenges(3, []);
+        List<String> challengetitles = [];
+        for (Challenge challenge in challenges.challengeList) {
+          challengetitles.add(challenge.title);
+        }
+        sharedPreferences.setStringList("challengetitles", challengetitles);
         ApplicationDataHolder.of(context).applicationStorage.token = reqlogin.body;
         ApplicationDataHolder.of(context).applicationStorage
           .setConsumption(MyConsumptionModel.withValues(1,1,1,1,"1900-01-01"));
