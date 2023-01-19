@@ -7,6 +7,14 @@ class MyConsumptionModel {
 
   MyConsumptionModel();
 
+  //constructor with all values
+  MyConsumptionModel.withValues(
+      this.dailyConsumption,
+      this.weeklyConsumption,
+      this.monthlyConsumption,
+      this.yearlyConsumption,
+      this.date);
+
   MyConsumptionModel.fromJson(Map<String, dynamic> json):
     dailyConsumption = json["dayConsumtion"],
     weeklyConsumption = json["weekConsumtion"],
@@ -28,5 +36,5 @@ class MyConsumptionModel {
   double? getWeeklyConsumption() => weeklyConsumption/1000;
   double? getMonthlyConsumption() => monthlyConsumption/1000;
   double? getYearlyConsumption() => yearlyConsumption/1000;
-  String? getDate() => date;
+  String? getDate() => date ?? null;
 }

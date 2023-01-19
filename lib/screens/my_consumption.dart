@@ -109,8 +109,16 @@ class _MyConsumption extends State<MyConsumption> {
   Widget build(BuildContext context) {
     final applicationDataHolder = ApplicationDataHolder.of(context);
     String token = applicationDataHolder.applicationStorage.token;
-
-    Future<MyConsumptionModel> mcm = getConsumptionsFromApi(token);
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    String dateStr = date.toString().substring(0, 10);
+    if (applicationDataHolder.applicationStorage.consumption.getDate() != dateStr){
+       Future<MyConsumptionModel> mcm = getConsumptionsFromApi(token);
+        mcm.then((value) => applicationDataHolder.applicationStorage.consumption = value);
+    }else{
+      MyConsumptionModel mcm = applicationDataHolder.applicationStorage.consumption;
+    }
+      
     return MyLayout(
         child: Column(children: [
       Container(
@@ -152,10 +160,15 @@ class _MyConsumption extends State<MyConsumption> {
                       padding: EdgeInsets.only(top: 25, bottom: 25),
                       child: titleComponent(itemIndex)),
                   FutureBuilder<MyConsumptionModel>(
-                      future: getConsumptionsFromApi(token),
+                      future: getConsumptions(token),
                       builder: (BuildContext context,
                           AsyncSnapshot<MyConsumptionModel> mcm) {
-                        return doubleValueWithGoodUnit(itemIndex, mcm.data);
+                        if (mcm.hasData) {
+                          applicationDataHolder.applicationStorage
+                              .setConsumption(mcm.data!);
+                          return doubleValueWithGoodUnit(itemIndex, mcm.data);
+                        }
+                        return const CircularProgressIndicator();
                       })
                   //doubleValueWithGoodUnit(itemIndex, mcm),
                 ],
@@ -200,6 +213,19 @@ class _MyConsumption extends State<MyConsumption> {
     ]));
   }
 
+  Future<MyConsumptionModel> getConsumptions(String token) async {
+    ApplicationDataHolder applicationDataHolder = ApplicationDataHolder.of(context);
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    String dateStr = date.toString().substring(0, 10);
+    MyConsumptionModel mcm = applicationDataHolder.applicationStorage.consumption;
+    if (applicationDataHolder.applicationStorage.consumption.getDate() != dateStr){
+      Future<MyConsumptionModel> mcm = getConsumptionsFromApi(token);
+      mcm.then((value) => applicationDataHolder.applicationStorage.consumption = value);
+    }
+    return mcm;
+  }
+
   Future<MyConsumptionModel> getConsumptionsFromApi(String token) async {
     http.Response response = await http.get(
         Uri.parse(AppConstants.rootURI +
@@ -211,7 +237,6 @@ class _MyConsumption extends State<MyConsumption> {
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': "application/json",
         });
-        print(response.body);
     if (response.statusCode == 200) {
       MyConsumptionModel mcm =
           MyConsumptionModel.fromJson(jsonDecode(response.body));
