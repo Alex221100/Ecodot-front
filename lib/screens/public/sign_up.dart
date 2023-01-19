@@ -240,10 +240,13 @@ class _SignUp extends State<SignUp> {
         ApplicationDataHolder.of(context).applicationStorage.token = reqlogin.body;
         ApplicationDataHolder.of(context).applicationStorage
           .setConsumption(MyConsumptionModel.withValues(1,1,1,1,"1900-01-01"));
-        Navigator.push(context,
-        MaterialPageRoute<void>(builder: (BuildContext context) {
-          return Home();
-        }));
+        Navigator.pushNamed(context, "/");
+        Flushbar(
+          duration: Duration(seconds: 3),
+          flushbarPosition: FlushbarPosition.TOP,
+          message: "Bienvenue sur Ecodot !",
+          backgroundColor: Colors.green,
+        )..show(context);
       }else{
         Navigator.pushNamed(context, "/login");
         Flushbar(
