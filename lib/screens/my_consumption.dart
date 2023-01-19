@@ -243,7 +243,7 @@ class _MyConsumption extends State<MyConsumption> {
     if (mcm.getDate() != dateStr) {
       Future<MyConsumptionModel?> mcm = MyConsumption.getConsumptions(token);
       mcm.then((value) {
-        if (value!.dailyConsumption != null) {
+        if (value?.dailyConsumption != null) {
           applicationDataHolder.applicationStorage.consumption = value;
         } else {
           Navigator.push(
