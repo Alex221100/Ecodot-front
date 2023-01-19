@@ -226,8 +226,7 @@ class _Home extends State<Home> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
                             height: 400,
-                            child: SingleChildScrollView(
-                                child: Card(
+                            child: Card(
                               margin: const EdgeInsets.all(10),
                               color: Colors.white,
                               shadowColor: Colors.blueGrey,
@@ -239,15 +238,34 @@ class _Home extends State<Home> {
                                   SplineArea(
                                       franceConsumption: FranceConsumption
                                           .getFranceConsumption()),
-                                  BarChart(
-                                      regionConsumption: RegionConsumption
-                                          .getRegionConsumption()),
                                 ],
                               ),
-                            )),
+                            ),
                           ),
                         ],
-                      )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 50),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 370,
+                          child: Card(
+                            margin: const EdgeInsets.all(10),
+                            color: Colors.white,
+                            shadowColor: Colors.blueGrey,
+                            elevation: 10,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                BarChart(
+                                    regionConsumption: RegionConsumption
+                                        .getRegionConsumption()),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 );
