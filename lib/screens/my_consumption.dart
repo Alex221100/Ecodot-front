@@ -109,16 +109,8 @@ class _MyConsumption extends State<MyConsumption> {
   Widget build(BuildContext context) {
     final applicationDataHolder = ApplicationDataHolder.of(context);
     String token = applicationDataHolder.applicationStorage.token;
-    DateTime now = new DateTime.now();
-    DateTime date = new DateTime(now.year, now.month, now.day);
-    String dateStr = date.toString().substring(0, 10);
-    if (applicationDataHolder.applicationStorage.consumption.getDate() != dateStr){
-       Future<MyConsumptionModel> mcm = getConsumptionsFromApi(token);
-        mcm.then((value) => applicationDataHolder.applicationStorage.consumption = value);
-    }else{
-      MyConsumptionModel mcm = applicationDataHolder.applicationStorage.consumption;
-    }
-      
+    Future<MyConsumptionModel> mcm = getConsumptions(token);
+         
     return MyLayout(
         child: Column(children: [
       Container(
@@ -221,7 +213,12 @@ class _MyConsumption extends State<MyConsumption> {
     MyConsumptionModel mcm = applicationDataHolder.applicationStorage.consumption;
     if (applicationDataHolder.applicationStorage.consumption.getDate() != dateStr){
       Future<MyConsumptionModel> mcm = getConsumptionsFromApi(token);
-      mcm.then((value) => applicationDataHolder.applicationStorage.consumption = value);
+      mcm.then((value) {
+        if (value.dailyConsumption != null) {
+          applicationDataHolder.applicationStorage.consumption = value;
+        }
+        //applicationDataHolder.applicationStorage.consumption = value;
+      });
     }
     return mcm;
   }
