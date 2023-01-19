@@ -128,7 +128,6 @@ Future<ScoreDTO> fetchCurrentUserScore() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   String? usermail = prefs.getString("currentusermail");
-  print("mail:" + usermail.toString());
   final body = {"usermail": usermail};
 
   Response apiResponse = await http.post(

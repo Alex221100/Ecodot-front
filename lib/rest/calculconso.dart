@@ -57,8 +57,6 @@ Future<CalculConsoResponse> fetchCalculConsoResponse(double cost, double power,
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: json.encode(body));
 
-  print(json.encode(body));
-
   if (apiResponse.statusCode == 200) {
     CalculConsoResponse consoResponse = CalculConsoResponse.fromJson(
         jsonDecode(utf8.decode(apiResponse.bodyBytes)));
