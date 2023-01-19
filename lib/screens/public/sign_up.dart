@@ -229,13 +229,24 @@ class _SignUp extends State<SignUp> {
         headers: headers,
         body: body);
     if (response.statusCode == 200) {
-      Navigator.pushNamed(context, "/login");
-      Flushbar(
-        duration: Duration(seconds: 3),
-        flushbarPosition: FlushbarPosition.TOP,
-        message: "Bienvenue sur Ecodot !",
-        backgroundColor: Colors.green,
-      )..show(context);
+      http.Response reqlogin = await login(SignInDataHolder.of(context).user.email, SignInDataHolder.of(context).user.password);
+      if (reqlogin.statusCode == 200){
+        ApplicationDataHolder.of(context).applicationStorage.token = reqlogin.body;
+        ApplicationDataHolder.of(context).applicationStorage
+          .setConsumption(MyConsumptionModel.withValues(1,1,1,1,"1900-01-01"));
+        Navigator.push(context,
+        MaterialPageRoute<void>(builder: (BuildContext context) {
+          return Login();
+        }));
+      }else{
+        Navigator.pushNamed(context, "/login");
+        Flushbar(
+          duration: Duration(seconds: 3),
+          flushbarPosition: FlushbarPosition.TOP,
+          message: "Bienvenue sur Ecodot !",
+          backgroundColor: Colors.green,
+        )..show(context);
+        }
     }else if (response.body.contains("already exist")){
         Flushbar(
           duration: Duration(seconds: 3),
