@@ -5,12 +5,15 @@ import 'package:ecodot/components/sign_in/form_house.dart';
 import 'package:ecodot/components/sign_in/form_information.dart';
 import 'package:ecodot/components/sign_in/sign_in_dataholder.dart';
 import 'package:ecodot/screens/form_enedis_settings.dart';
+import 'package:ecodot/screens/public/login.dart';
 import 'package:ecodot/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:another_flushbar/flushbar.dart';
 
+import '../../components/application_dataholder.dart';
 import '../../main.dart';
+import '../../model/my_consumption_model.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -166,6 +169,7 @@ class _SignUp extends State<SignUp> {
       };
 
   goSetupEnedis() async{
+
     String body = jsonEncode({
     'lastname': SignInDataHolder.of(context).user.lastname,
     'firstname': SignInDataHolder.of(context).user.firstname,
@@ -177,17 +181,33 @@ class _SignUp extends State<SignUp> {
     });
 
     http.Response response = await http.post(
-    Uri.parse(AppConstants.rootURI +
-    ":" +
-    AppConstants.rootPort +
-    "/authentication/signup"),
-    headers: headers,
-    body: body);
-
-      Navigator.push(context,
-      MaterialPageRoute<void>(builder: (BuildContext context) {
-        return FormEnedisSettings();
-      }));
+      Uri.parse(AppConstants.rootURI +
+      ":" +
+      AppConstants.rootPort +
+      "/authentication/signup"),
+      headers: headers,
+      body: body);
+      if (response.body.contains("already exist")){
+        Flushbar(
+          duration: Duration(seconds: 3),
+          flushbarPosition: FlushbarPosition.TOP,
+          message: "Utilisateur déjà existant.",
+          backgroundColor: Colors.red,
+        )..show(context);
+      }
+      else{
+        http.Response reqlogin = await login(SignInDataHolder.of(context).user.email, SignInDataHolder.of(context).user.password);
+        if (reqlogin.statusCode == 200){
+          ApplicationDataHolder.of(context).applicationStorage.token = reqlogin.body;
+          ApplicationDataHolder.of(context).applicationStorage
+            .setConsumption(MyConsumptionModel.withValues(1,1,1,1,"1900-01-01"));
+          Navigator.push(context,
+          MaterialPageRoute<void>(builder: (BuildContext context) {
+            return FormEnedisSettings();
+          }));
+        }
+        
+      }
   }
   goHome() async {
     //sign in the user
@@ -208,7 +228,6 @@ class _SignUp extends State<SignUp> {
             "/authentication/signup"),
         headers: headers,
         body: body);
-
     if (response.statusCode == 200) {
       Navigator.pushNamed(context, "/login");
       Flushbar(
@@ -217,7 +236,14 @@ class _SignUp extends State<SignUp> {
         message: "Bienvenue sur Ecodot !",
         backgroundColor: Colors.green,
       )..show(context);
-    } else {
+    }else if (response.body.contains("already exist")){
+        Flushbar(
+          duration: Duration(seconds: 3),
+          flushbarPosition: FlushbarPosition.TOP,
+          message: "Utilisateur déjà existant.",
+          backgroundColor: Colors.red,
+        )..show(context);
+      }else {
       Flushbar(
         duration: Duration(seconds: 3),
         flushbarPosition: FlushbarPosition.TOP,
@@ -225,6 +251,19 @@ class _SignUp extends State<SignUp> {
         backgroundColor: Colors.red,
       )..show(context);
     }
+  }
+  Future<http.Response> login(String email, String password) async {
+    String body = jsonEncode({'email': email, 'password': password});
+
+    http.Response response = await http.post(
+        Uri.parse(AppConstants.rootURI +
+            ":" +
+            AppConstants.rootPort +
+            "/authentication/login"),
+        headers: headers,
+        body: body);
+
+    return response;
   }
 
   tapped(int step) {
