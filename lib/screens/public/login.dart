@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ecodot/components/application_dataholder.dart';
+import 'package:ecodot/model/my_consumption_model.dart';
 import 'package:ecodot/rest/challenge.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -101,6 +102,8 @@ class _Login extends State<Login> {
                     if (req.statusCode == 200) {
                       applicationDataHolder.applicationStorage
                           .setToken(req.body);
+                        applicationDataHolder.applicationStorage
+                          .setConsumption(MyConsumptionModel.withValues(1,1,1,1,"1900-01-01"));
 
                       //Stockages sharedpreferences
                       SharedPreferences prefs =
