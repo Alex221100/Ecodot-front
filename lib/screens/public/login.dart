@@ -102,9 +102,8 @@ class _Login extends State<Login> {
                     if (req.statusCode == 200) {
                       applicationDataHolder.applicationStorage
                           .setToken(req.body);
-                        applicationDataHolder.applicationStorage
-                          .setConsumption(MyConsumptionModel.withValues(1,1,1,1,"1900-01-01"));
-
+                      applicationDataHolder.applicationStorage
+                        .setConsumption(MyConsumptionModel.withValues(1,1,1,1,"1900-01-01"));
                       //Stockages sharedpreferences
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
