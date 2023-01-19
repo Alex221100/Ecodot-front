@@ -81,7 +81,7 @@ class _MyConsumption extends State<MyConsumption> {
           consumption: daycons,
           currency: '€',
           priceInCents: daycons * 20.41,
-          foregroundColor: Color(0xff56CA00),
+          foregroundColor: getColor(daycons),
           //maxValue: 12.5, set exemple value for demo
           maxValue: daycons * 1.2,
           unit: Unit.kWh,
@@ -91,7 +91,7 @@ class _MyConsumption extends State<MyConsumption> {
           consumption: weekcons,
           currency: '€',
           priceInCents: weekcons * 20.41,
-          foregroundColor: Color(0xff56CA00),
+          foregroundColor: getColor(weekcons),
           //maxValue: 87.5, set exemple value for demo
           maxValue: weekcons * 1.34,
           unit: Unit.kWh,
@@ -101,7 +101,7 @@ class _MyConsumption extends State<MyConsumption> {
           consumption: monthcons,
           currency: '€',
           priceInCents: monthcons * 20.41,
-          foregroundColor: Color(0xff56CA00),
+          foregroundColor: getColor(monthcons),
           //maxValue: 390, set exemple value for demo
           maxValue: monthcons * 1.111,
           unit: Unit.kWh,
@@ -111,23 +111,26 @@ class _MyConsumption extends State<MyConsumption> {
           consumption: yearcons,
           currency: '€',
           priceInCents: yearcons * 20.41,
-          foregroundColor: Color(0xff56CA00),
+          foregroundColor: getColor(yearcons),
           //maxValue: 4679, set exemple value for demo
           maxValue: yearcons * 1.34,
           unit: Unit.kWh,
         );
 
       default:
-        return const DoubleValueTextWithCircle(
+        return DoubleValueTextWithCircle(
           consumption: 40.5,
           currency: '€',
           priceInCents: 40.5 * 27,
-          foregroundColor: Color(0xff56CA00),
+          foregroundColor: getColor(40.5),
           maxValue: 100,
           unit: Unit.kWh,
         );
     }
   }
+
+  Color getColor(double consumption) =>
+      consumption == 0 ? Colors.white : const Color(0xff56CA00);
 
   @override
   Widget build(BuildContext context) {
