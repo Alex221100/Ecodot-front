@@ -7,6 +7,6 @@ class MyColor {
 }
 
 class AppConstants {
-  static final rootURI = "http://10.0.2.2";
-  static final rootPort = "8080";
+  static final rootURI = "http://yaaaaaaan.alwaysdata.net";
+  static final rootPort = "80";
 }
