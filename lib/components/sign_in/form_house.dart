@@ -14,7 +14,13 @@ class _FormHouse extends State<FormHouse> {
 
   @override
   Widget build(BuildContext context) {
-    final signInDataHolder = SignInDataHolder.of(context);
+    SignInDataHolder signInDataHolder = SignInDataHolder.of(context);
+
+    //Valeurs pour champ vide
+    signInDataHolder.setUserCity("");
+    signInDataHolder.setUserCityCode("");
+    signInDataHolder.setUserNbPersonHouse(1);
+
     return Container(
       alignment: Alignment.topCenter,
       child: SizedBox(
