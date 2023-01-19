@@ -36,5 +36,5 @@ class MyConsumptionModel {
   double? getWeeklyConsumption() => weeklyConsumption/1000;
   double? getMonthlyConsumption() => monthlyConsumption/1000;
   double? getYearlyConsumption() => yearlyConsumption/1000;
-  String? getDate() => date ?? null;
+  String? getDate() => date ?? "01-01-1900";
 }
