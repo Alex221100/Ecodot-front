@@ -10,10 +10,12 @@ import 'package:ecodot/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:another_flushbar/flushbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/application_dataholder.dart';
 import '../../main.dart';
 import '../../model/my_consumption_model.dart';
+import '../home.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -198,6 +200,8 @@ class _SignUp extends State<SignUp> {
       else{
         http.Response reqlogin = await login(SignInDataHolder.of(context).user.email, SignInDataHolder.of(context).user.password);
         if (reqlogin.statusCode == 200){
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          sharedPreferences.setString("currentusermail", SignInDataHolder.of(context).user.email);
           ApplicationDataHolder.of(context).applicationStorage.token = reqlogin.body;
           ApplicationDataHolder.of(context).applicationStorage
             .setConsumption(MyConsumptionModel.withValues(1,1,1,1,"1900-01-01"));
@@ -231,12 +235,14 @@ class _SignUp extends State<SignUp> {
     if (response.statusCode == 200) {
       http.Response reqlogin = await login(SignInDataHolder.of(context).user.email, SignInDataHolder.of(context).user.password);
       if (reqlogin.statusCode == 200){
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setString("currentusermail", SignInDataHolder.of(context).user.email);
         ApplicationDataHolder.of(context).applicationStorage.token = reqlogin.body;
         ApplicationDataHolder.of(context).applicationStorage
           .setConsumption(MyConsumptionModel.withValues(1,1,1,1,"1900-01-01"));
         Navigator.push(context,
         MaterialPageRoute<void>(builder: (BuildContext context) {
-          return Login();
+          return Home();
         }));
       }else{
         Navigator.pushNamed(context, "/login");
