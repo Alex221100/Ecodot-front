@@ -23,7 +23,7 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
   @override
   Widget build(BuildContext context) {
     final applicationDataHolder = ApplicationDataHolder.of(context);
-    String token = applicationDataHolder.applicationStorage.token;
+    String token = applicationDataHolder.applicationStorage.token!;
 
     return Scaffold(
       backgroundColor: const Color(0xffF4F5FA),
@@ -106,13 +106,12 @@ class _FormEnedisSettings extends State<FormEnedisSettings> {
                         await saveTokenPDL(token, enedisToken, enedisPDL);
                     if (req.statusCode == 200) {
                       Navigator.pushNamed(context, "/");
-                    }
-                    else{
-                      Navigator.push(context, new MaterialPageRoute(
-                        builder: (context) =>
-                        FormEnedisSettings())
-                      );
-                    Flushbar(
+                    } else {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => FormEnedisSettings()));
+                      Flushbar(
                         duration: Duration(seconds: 3),
                         flushbarPosition: FlushbarPosition.TOP,
                         message:

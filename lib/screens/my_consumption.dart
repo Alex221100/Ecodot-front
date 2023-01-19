@@ -20,6 +20,30 @@ class MyConsumption extends StatefulWidget {
 
   @override
   State<MyConsumption> createState() => _MyConsumption();
+
+  static Future<MyConsumptionModel?> getConsumptions(String token) async {
+    http.Response response = await http.get(
+        Uri.parse(AppConstants.rootURI +
+            ":" +
+            AppConstants.rootPort +
+            "/myconsumption/all"),
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': "application/json",
+        });
+    if (response.statusCode == 200) {
+      MyConsumptionModel mcm =
+          MyConsumptionModel.fromJson(jsonDecode(response.body));
+      return mcm;
+    } else if (response.statusCode == 204 || response.statusCode == 400) {
+      return null;
+    } else if (response.statusCode == 429) {
+      throw Exception("We're working on it, please retry later(Like tomorrow)");
+    } else {
+      throw Exception("Failed to load user's consumptions");
+    }
+  }
 }
 
 class _MyConsumption extends State<MyConsumption> {
@@ -108,9 +132,9 @@ class _MyConsumption extends State<MyConsumption> {
   @override
   Widget build(BuildContext context) {
     final applicationDataHolder = ApplicationDataHolder.of(context);
-    String token = applicationDataHolder.applicationStorage.token;
-    Future<MyConsumptionModel> mcm = getConsumptions(token);
-         
+    String? token = applicationDataHolder.applicationStorage.token;
+    Future<MyConsumptionModel> mcm = _getConsumptions(token!);
+
     return MyLayout(
         child: Column(children: [
       Container(
@@ -152,7 +176,7 @@ class _MyConsumption extends State<MyConsumption> {
                       padding: EdgeInsets.only(top: 25, bottom: 25),
                       child: titleComponent(itemIndex)),
                   FutureBuilder<MyConsumptionModel>(
-                      future: getConsumptions(token),
+                      future: _getConsumptions(token),
                       builder: (BuildContext context,
                           AsyncSnapshot<MyConsumptionModel> mcm) {
                         if (mcm.hasData) {
@@ -205,58 +229,36 @@ class _MyConsumption extends State<MyConsumption> {
     ]));
   }
 
-  Future<MyConsumptionModel> getConsumptions(String token) async {
-    ApplicationDataHolder applicationDataHolder = ApplicationDataHolder.of(context);
+  Future<MyConsumptionModel> _getConsumptions(String token) async {
+    ApplicationDataHolder applicationDataHolder =
+        ApplicationDataHolder.of(context);
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     String dateStr = date.toString().substring(0, 10);
-    MyConsumptionModel mcm = applicationDataHolder.applicationStorage.consumption;
-    if (applicationDataHolder.applicationStorage.consumption.getDate() != dateStr){
-      Future<MyConsumptionModel> mcm = getConsumptionsFromApi(token);
+    MyConsumptionModel mcm =
+        applicationDataHolder.applicationStorage.consumption!;
+    if (mcm.getDate() != dateStr) {
+      Future<MyConsumptionModel?> mcm = MyConsumption.getConsumptions(token);
       mcm.then((value) {
-        if (value.dailyConsumption != null) {
+        if (value!.dailyConsumption != null) {
           applicationDataHolder.applicationStorage.consumption = value;
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const FormEnedisSettings()));
+          Flushbar(
+            duration: const Duration(seconds: 3),
+            flushbarPosition: FlushbarPosition.TOP,
+            message: "Veuillez vérifier vos données Enedis.",
+            backgroundColor: Colors.red,
+          ).show(context);
+
+          return MyConsumptionModel();
         }
         //applicationDataHolder.applicationStorage.consumption = value;
       });
     }
     return mcm;
-  }
-
-  Future<MyConsumptionModel> getConsumptionsFromApi(String token) async {
-    http.Response response = await http.get(
-        Uri.parse(AppConstants.rootURI +
-            ":" +
-            AppConstants.rootPort +
-            "/myconsumption/all"),
-        headers: {
-          'Authorization': token,
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': "application/json",
-        });
-    if (response.statusCode == 200) {
-      MyConsumptionModel mcm =
-          MyConsumptionModel.fromJson(jsonDecode(response.body));
-      return mcm;
-    } else if (response.statusCode == 204 || response.statusCode == 400) {
-        Navigator.push(context, new MaterialPageRoute(
-          builder: (context) =>
-          FormEnedisSettings())
-        );
-        Flushbar(
-          duration: Duration(seconds: 3),
-          flushbarPosition: FlushbarPosition.TOP,
-          message:
-              "Veuillez vérifier vos données Enedis.",
-          backgroundColor: Colors.red,
-        )..show(context);
-
-        return MyConsumptionModel();
-      } else if (response.statusCode == 429) {
-      throw Exception("We're working on it, please retry later(Like tomorrow)");
-    }
-    else{
-      throw Exception("Failed to load user's consumptions");
-    }
   }
 }

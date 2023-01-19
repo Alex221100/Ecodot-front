@@ -1,7 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecodot/components/bar_chart.dart';
+import 'package:ecodot/model/application_storage.dart';
 import 'package:ecodot/screens/france_consumption.dart';
 import 'package:ecodot/screens/guide.dart';
+import 'package:ecodot/screens/my_consumption.dart';
 import 'package:ecodot/screens/region_consumption.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,8 +65,8 @@ class _Home extends State<Home> {
                                       blurRadius: 7,
                                       offset: const Offset(0, 3))
                                 ]),
-                            padding: EdgeInsets.all(20),
-                            margin: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(20),
+                            margin: const EdgeInsets.all(5),
                             alignment: Alignment.center,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -72,7 +74,8 @@ class _Home extends State<Home> {
                                 Flexible(
                                     child: AutoSizeText(
                                   challengetitle,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                   maxLines: 4,
                                 )),
                                 //Flexible(child: Text(challenge.description))
@@ -119,27 +122,50 @@ class _Home extends State<Home> {
                                   Center(
                                     child: Row(
                                       children: [
-                                        Image(
+                                        const Image(
                                             image: AssetImage(
                                                 'assets/electricity.png')),
                                         Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 10, bottom: 10),
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 10, bottom: 10),
-                                            child: Column(
-                                              children: [
-                                                Text("Electricité"),
-                                                Text(
-                                                  "245 kW",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 17),
-                                                )
-                                              ],
-                                            ),
+                                          padding: const EdgeInsets.only(
+                                              left: 10, bottom: 10),
+                                          child: Column(
+                                            children: [
+                                              const Text("Electricité"),
+                                              FutureBuilder(
+                                                future:
+                                                    ApplicationDataHolder.of(
+                                                            context)
+                                                        .applicationStorage
+                                                        .getToken(),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    return FutureBuilder(
+                                                      future: MyConsumption
+                                                          .getConsumptions(
+                                                              snapshot.data!),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        if (snapshot.hasData) {
+                                                          return Text(
+                                                            "${snapshot.data!.dailyConsumption} Wh",
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 17),
+                                                          );
+                                                        } else {
+                                                          return const Text(
+                                                              "...");
+                                                        }
+                                                      },
+                                                    );
+                                                  } else {
+                                                    return const Text("..");
+                                                  }
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
@@ -163,7 +189,7 @@ class _Home extends State<Home> {
                               elevation: 10,
                               child: Column(
                                 children: [
-                                  Padding(
+                                  const Padding(
                                       padding: EdgeInsets.only(top: 10),
                                       child: Image(
                                         image:
@@ -171,7 +197,7 @@ class _Home extends State<Home> {
                                         height: 60,
                                         width: 60,
                                       )),
-                                  Padding(
+                                  const Padding(
                                     padding: EdgeInsets.only(top: 10),
                                     child: Text(
                                       "Guide",
@@ -210,7 +236,7 @@ class _Home extends State<Home> {
                                         Navigator.push(context,
                                             MaterialPageRoute<void>(builder:
                                                 (BuildContext context) {
-                                          return Guide();
+                                          return const Guide();
                                         }));
                                       },
                                       child: const Text(
